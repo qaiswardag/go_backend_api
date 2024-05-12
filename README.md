@@ -29,6 +29,32 @@ Stores voting data on the blockchain, ensuring that all transactions are recorde
 
 Facilitates auditing and verification of election results by allowing stakeholders to access and validate voting records on the blockchain.
 
+# Technology Stack
+
+#### Go Programming Language
+
+Utilizes Go for backend development, leveraging its performance, concurrency support, and simplicity.
+
+#### Chi Router
+
+Uses the Chi router for routing HTTP requests and handling RESTful APIs efficiently.
+
+#### GORM
+
+Integrates the GORM package for database operations and user management tasks, ensuring seamless interaction with the underlying database.
+
+#### Blockchain Integration
+
+Interacts with blockchain networks (e.g., Ethereum) using appropriate packages (e.g., go-ethereum) for storing voting data securely.
+
+#### Authentication
+
+Implements secure authentication using JWT (JSON Web Tokens) for user authentication and session management.
+
+#### Cryptography
+
+Utilizes cryptographic primitives from Go's standard library for secure data encryption, hashing, and digital signatures.
+
 # Contributing
 
 Thank you for considering contributing to this project!
