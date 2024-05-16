@@ -1,6 +1,6 @@
 # About
 
-This project is a decentralized voting system built using the Go programming language. The system aims to provide a transparent and secure platform for voting processes.
+This project is a voting system built using the Go programming language. The system aims to provide a transparent and secure platform for voting processes.
 
 # Features
 
