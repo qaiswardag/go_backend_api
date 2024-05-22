@@ -14,7 +14,7 @@ Provides a user-friendly interface for voter registration, login, and casting vo
 
 #### Transparent Voting Process
 
-Enables voters to cast their votes securely while maintaining transparency and integrity throughout the voting process.
+Enables voters to vote securely while maintaining transparency and integrity throughout the voting process.
 
 # Technology Stack
 
