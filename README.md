@@ -6,11 +6,11 @@ This project is a voting system built using the Go programming language. The sys
 
 #### Secure Authentication
 
-Implements a robust authentication system using JSON Web Tokens (JWT) to verify the identity of voters and prevent unauthorized access.
+Robust authentication system using JSON Web Tokens (JWT) to verify the identity of voters and prevent unauthorized access.
 
 #### User-friendly Interface
 
-Provides a user-friendly interface for voter registration, login, and casting votes, ensuring accessibility and ease of use for all participants.
+Provides a user-friendly interface for voter registration, login, and casting votes.
 
 #### Transparent Voting Process
 
