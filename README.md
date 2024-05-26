@@ -22,10 +22,6 @@ Enables voters to vote securely while maintaining transparency and integrity thr
 
 Utilizes Go for backend development, leveraging its performance, concurrency support, and simplicity.
 
-#### Chi Router
-
-Uses the Chi router for routing HTTP requests and handling RESTful APIs efficiently.
-
 #### Authentication
 
 Implements secure authentication using JWT (JSON Web Tokens) for user authentication and session management.
