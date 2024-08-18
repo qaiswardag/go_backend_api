@@ -1,6 +1,6 @@
 # About
 
-This project is using the Go programming language. The system aims to provide a transparent and secure platform .
+This project is using the Go programming language. The system aims to provide a transparent and secure platform.
 
 # Features
 
