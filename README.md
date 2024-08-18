@@ -1,20 +1,16 @@
 # About
 
-This project is a voting system built using the Go programming language. The system aims to provide a transparent and secure platform for voting processes.
+This project is using the Go programming language. The system aims to provide a transparent and secure platform .
 
 # Features
 
 #### Secure Authentication
 
-Robust authentication system using JSON Web Tokens (JWT) to verify the identity of voters and prevent unauthorized access.
+Robust authentication system using JSON Web Tokens (JWT) for verification.
 
 #### User-friendly Interface
 
-Provides a user-friendly interface for voter registration, login, and casting votes.
-
-#### Transparent Voting Process
-
-Enables voters to vote securely while maintaining transparency and integrity throughout the voting process.
+Provides a user-friendly interface.
 
 # Technology Stack
 
