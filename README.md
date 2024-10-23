@@ -4,10 +4,6 @@ This project is using the Go programming language. The system aims to provide a 
 
 # Features
 
-#### Secure Authentication
-
-Robust authentication system using JSON Web Tokens (JWT) for verification.
-
 #### User-friendly Interface
 
 Provides a user-friendly interface.
