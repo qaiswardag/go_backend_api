@@ -1,29 +1,30 @@
 <script setup>
-const emit = defineEmits(['handleButton']);
-
-// first button function
-const handleButton = function () {
-  emit('handleButton');
-};
+import { RouterLink } from 'vue-router';
 </script>
 
 <template>
   <nav
-    class="px-6 py-6 mx-auto flex items-center justify-between bg-gray-50 px-4 lg:h-[10vh] h-[16vh]"
+    class="bg-red-100 px-6 py-6 mx-auto flex items-center justify-between lg:h-[10vh] h-[16vh]"
     aria-label="Global"
   >
-    <img
-      class="h-6"
-      src="/logo/logo.svg"
-      alt="Logo"
-    />
+    <RouterLink :to="{ name: 'Home' }">
+      <img
+        class="h-6"
+        src="/logo/logo.svg"
+        alt="Logo"
+      />
+    </RouterLink>
 
     <div class="flex lg:gap-x-12 myPrimaryGap">
       <p
-        @click="handleButton"
         class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
-        Start Builder
+        <RouterLink :to="{ name: 'Home' }"> Home </RouterLink>
+      </p>
+      <p
+        class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+      >
+        <RouterLink :to="{ name: 'Login' }"> Login </RouterLink>
       </p>
     </div>
   </nav>

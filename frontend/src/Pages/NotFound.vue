@@ -4,7 +4,7 @@ import Footer from '@/Components/Homepage/Footer.vue';
 </script>
 
 <template>
-  <Navbar @handleButton="handlePageBuilder"></Navbar>
-  <router-view></router-view>
+  <p>Page not fount...</p>
+
   <Footer></Footer>
 </template>
