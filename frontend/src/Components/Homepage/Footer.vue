@@ -3,7 +3,7 @@
     <div>
       <p class="myPrimaryParagraph">
         <a
-          href="https://github.com/qaiswardag/vue-website-page-builder"
+          href="https://github.com/qaiswardag"
           target="_blank"
           class="myPrimaryLink text-myPrimaryDarkGrayColor"
           >Qais Wardag | GitHub
@@ -12,7 +12,7 @@
     </div>
     <div>
       <a
-        href="https://github.com/qaiswardag/vue-website-page-builder"
+        href="https://github.com/qaiswardag"
         target="_blank"
         class="text-myPrimaryDarkGrayColor"
       >
