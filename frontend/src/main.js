@@ -8,14 +8,16 @@ import Login from './Pages/Login.vue';
 import Register from './Pages/Register.vue';
 import Dashboard from './Pages/Dashboard.vue';
 import NotFound from './Pages/NotFound.vue';
+import Jobs from './Pages/Jobs.vue';
 import { createWebHistory, createRouter } from 'vue-router';
 
 const newRoutes = [
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   { path: '/', name: 'Home', component: Home },
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+  { path: '/jobs', name: 'Jobs', component: Jobs },
 ];
 
 const router = createRouter({
