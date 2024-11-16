@@ -5,6 +5,8 @@ import Footer from '@/Components/Homepage/Footer.vue';
 
 <template>
   <Navbar></Navbar>
-  <router-view></router-view>
+  <div class="myPrimaryWidthScreenModule">
+    <router-view></router-view>
+  </div>
   <Footer></Footer>
 </template>

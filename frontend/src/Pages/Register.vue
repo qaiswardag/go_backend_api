@@ -40,10 +40,7 @@ const handleSignUp = async function () {
 
 <template>
   <div>
-    <FullWidthElement
-      :descriptionArea="true"
-      class="bg-gray-50"
-    >
+    <FullWidthElement :descriptionArea="true">
       <template #title>Sign up </template>
 
       <template #content>
@@ -78,7 +75,6 @@ const handleSignUp = async function () {
                       name="email"
                       type="email"
                       autocomplete="email"
-                      required=""
                       class="myPrimaryInput"
                     />
                   </div>
@@ -96,8 +92,6 @@ const handleSignUp = async function () {
                       id="password"
                       name="password"
                       type="password"
-                      autocomplete="current-password"
-                      required=""
                       class="myPrimaryInput"
                     />
                   </div>

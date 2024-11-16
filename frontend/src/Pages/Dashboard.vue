@@ -39,10 +39,7 @@ const handlePostJob = async function () {
 
 <template>
   <div>
-    <FullWidthElement
-      :descriptionArea="true"
-      class="bg-gray-50"
-    >
+    <FullWidthElement :descriptionArea="true">
       <template #title>Dashboard </template>
 
       <template #content>
@@ -57,11 +54,10 @@ const handlePostJob = async function () {
               Post a new job
             </h2>
           </div>
-          <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-7xl bg-red-50">
+            <div class="px-6 py-12 shadow sm:rounded-lg sm:px-12">
               <form
                 class="space-y-6"
-                action="#"
                 method="POST"
               >
                 <div>
@@ -76,7 +72,6 @@ const handlePostJob = async function () {
                       id="jobTitle"
                       name="jobTitle"
                       type="jobTitle"
-                      required=""
                       class="myPrimaryInput"
                     />
                   </div>

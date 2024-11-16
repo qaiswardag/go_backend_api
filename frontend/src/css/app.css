@@ -25,13 +25,13 @@
   }
 
   .myPrimaryWidthScreenModule {
-    @apply myModulePyMargin myModulePadding;
+    @apply myModulePyMargin myModulePadding bg-purple-200;
   }
   .myPrimaryModule {
     @apply max-w-7xl mx-auto myModulePyMargin myModulePadding;
   }
   .myPrimaryContentSection {
-    @apply max-w-7xl mx-auto md:px-4 px-4 lg:pb-10 md:pb-8 pb-6;
+    @apply max-w-7xl mx-auto md:px-4 px-4 lg:pb-10 md:pb-8 pb-6 bg-green-200;
   }
 
   /*

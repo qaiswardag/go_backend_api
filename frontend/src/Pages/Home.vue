@@ -160,10 +160,7 @@ onBeforeMount(() => {
       <PageBuilderView></PageBuilderView>
     </PageBuilderModal>
 
-    <FullWidthElement
-      :descriptionArea="true"
-      class="bg-gray-50"
-    >
+    <FullWidthElement :descriptionArea="true">
       <template #title
         >Everything you need. Break free from design limitations
       </template>

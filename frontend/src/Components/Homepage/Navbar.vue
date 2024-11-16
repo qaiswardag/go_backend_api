@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router';
 
 <template>
   <nav
-    class="bg-red-100 px-6 py-6 mx-auto flex items-center justify-between lg:h-[10vh] h-[16vh]"
+    class="bg-slate-200 px-6 py-6 mx-auto flex items-center justify-between lg:h-[10vh] h-[16vh]"
     aria-label="Global"
   >
     <RouterLink :to="{ name: 'Home' }">
@@ -15,9 +15,9 @@ import { RouterLink } from 'vue-router';
       />
     </RouterLink>
 
-    <div class="flex lg:gap-x-12 myPrimaryGap">
+    <div class="flex lg:gap-x-8 myPrimaryGap">
       <p
-        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-xs font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
         <RouterLink
           class="text-myPrimaryDarkGrayColor"
@@ -27,7 +27,7 @@ import { RouterLink } from 'vue-router';
         </RouterLink>
       </p>
       <p
-        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-xs font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
         <RouterLink
           class="text-myPrimaryDarkGrayColor"
@@ -37,7 +37,7 @@ import { RouterLink } from 'vue-router';
         </RouterLink>
       </p>
       <p
-        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-xs font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
         <RouterLink
           class="text-myPrimaryDarkGrayColor"
@@ -47,7 +47,7 @@ import { RouterLink } from 'vue-router';
         </RouterLink>
       </p>
       <p
-        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-xs font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
         <RouterLink
           class="text-myPrimaryDarkGrayColor"
