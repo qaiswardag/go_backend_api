@@ -40,7 +40,7 @@ const handlePostJob = async function () {
 <template>
   <div>
     <FullWidthElement :descriptionArea="true">
-      <template #title>Dashboard </template>
+      <template #title>Dashboard</template>
 
       <template #content>
         <!-- Form # start -->

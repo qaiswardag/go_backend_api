@@ -41,7 +41,7 @@ const handleSignUp = async function () {
 <template>
   <div>
     <FullWidthElement :descriptionArea="true">
-      <template #title>Sign up </template>
+      <template #title>Sign up</template>
 
       <template #content>
         <!-- Form # start -->

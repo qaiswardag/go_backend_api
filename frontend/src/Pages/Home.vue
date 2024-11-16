@@ -161,15 +161,8 @@ onBeforeMount(() => {
     </PageBuilderModal>
 
     <FullWidthElement :descriptionArea="true">
-      <template #title
-        >Everything you need. Break free from design limitations
-      </template>
+      <template #title>Home</template>
       <template #description>
-        <p class="myPrimaryParagraph font-normal">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem minima
-          iure at architecto fugiat. Et quia quaerat sed fugit consectetur!
-        </p>
-
         <button
           @click="handlePageBuilder"
           class="myPrimaryButton lg:text-sm text-[10px] lg:py-2 py-2 min-h-2 mt-4"

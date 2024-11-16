@@ -35,7 +35,7 @@ const handleGetJobs = async function () {
 <template>
   <div>
     <FullWidthElement :descriptionArea="true">
-      <template #title>Jobs </template>
+      <template #title>Jobs</template>
 
       <template #content>
         <div>
