@@ -43,54 +43,87 @@ const handlePostJob = async function () {
       <template #title>Dashboard</template>
 
       <template #content>
-        <!-- Form # start -->
-        <div
-          class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8"
-        >
-          <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2
-              class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-            >
-              Post a new job
-            </h2>
-          </div>
-          <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-7xl bg-red-50">
-            <div class="px-6 py-12 shadow sm:rounded-lg sm:px-12">
-              <form
-                class="space-y-6"
-                method="POST"
+        <div class="flex gap-8">
+          <!-- Data for logged in users # start -->
+          <div
+            class="w-full bg-gray-300 border-2 border-gray-600 py-8 px-4 rounded-lg"
+          >
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+              <h2
+                class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+              >
+                List of data only for logged in users
+              </h2>
+            </div>
+            <ul class="flex flex-col gap-8">
+              <li
+                class="rounded bg-red-200 overflow-hidden whitespace-pre-line flex-1 h-auto px-4 py-12"
               >
                 <div>
-                  <label
-                    for="jobTitle"
-                    class="myPrimaryInputLabel"
-                    >Content</label
-                  >
-                  <div class="mt-2">
-                    <input
-                      v-model="jobTitle"
-                      id="jobTitle"
-                      name="jobTitle"
-                      type="jobTitle"
-                      class="myPrimaryInput"
-                    />
-                  </div>
+                  <p class="myPrimaryParagraph">Title here</p>
                 </div>
-
+              </li>
+              <li
+                class="rounded bg-red-200 overflow-hidden whitespace-pre-line flex-1 h-auto px-4 py-12"
+              >
                 <div>
-                  <button
-                    type="button"
-                    @click="handlePostJob"
-                    class="myPrimaryButton w-full"
-                  >
-                    Submit
-                  </button>
+                  <p class="myPrimaryParagraph">Title here</p>
                 </div>
-              </form>
+              </li>
+            </ul>
+          </div>
+          <!-- Data for logged in users # end -->
+          <!-- Form # start -->
+          <div
+            class="w-full bg-gray-300 border-2 border-gray-600 py-8 px-4 rounded-lg"
+          >
+            <div>
+              <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                <h2
+                  class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+                >
+                  Post a new job
+                </h2>
+              </div>
+              <div>
+                <div>
+                  <form
+                    class="space-y-6"
+                    method="POST"
+                  >
+                    <div>
+                      <label
+                        for="jobTitle"
+                        class="myPrimaryInputLabel"
+                        >Content</label
+                      >
+                      <div class="mt-2">
+                        <input
+                          v-model="jobTitle"
+                          id="jobTitle"
+                          name="jobTitle"
+                          type="jobTitle"
+                          class="myPrimaryInput"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        type="button"
+                        @click="handlePostJob"
+                        class="myPrimaryButton w-full"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- Form # end -->
         </div>
-        <!-- Form # end -->
       </template>
     </FullWidthElement>
   </div>
