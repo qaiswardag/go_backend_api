@@ -611,4 +611,8 @@ h3 {
   color: #fff !important;
 }
 
+.router-link-active.router-link-exact-active {
+  color: #16a34a;
+}
+
 /* CSS for Vue datepicker # end */

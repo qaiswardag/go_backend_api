@@ -16,9 +16,9 @@ const {
 const email = ref('');
 const password = ref('');
 
-const handleLogin = async function () {
-  console.log(`Login email is: ${email.value}`);
-  console.log(`Login password is: ${password.value}`);
+const handleSignUp = async function () {
+  console.log(`Register or sign up email is: ${email.value}`);
+  console.log(`Register or sign up password is: ${password.value}`);
   return;
   await handleData(
     `https://www.google.com`,
@@ -44,7 +44,7 @@ const handleLogin = async function () {
       :descriptionArea="true"
       class="bg-gray-50"
     >
-      <template #title>Login </template>
+      <template #title>Sign up </template>
 
       <template #content>
         <!-- Form # start -->
@@ -55,7 +55,7 @@ const handleLogin = async function () {
             <h2
               class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
             >
-              Sign in to your account
+              Sign up today
             </h2>
           </div>
 
@@ -63,7 +63,6 @@ const handleLogin = async function () {
             <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
               <form
                 class="space-y-6"
-                action="#"
                 method="POST"
               >
                 <div>
@@ -123,7 +122,7 @@ const handleLogin = async function () {
                 <div>
                   <button
                     type="button"
-                    @click="handleLogin"
+                    @click="handleSignUp"
                     class="myPrimaryButton w-full"
                   >
                     Submit

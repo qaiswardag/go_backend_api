@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import Home from './Pages/Home.vue';
 import Login from './Pages/Login.vue';
+import Register from './Pages/Register.vue';
 import Dashboard from './Pages/Dashboard.vue';
 import NotFound from './Pages/NotFound.vue';
 import { createWebHistory, createRouter } from 'vue-router';
@@ -12,6 +13,7 @@ import { createWebHistory, createRouter } from 'vue-router';
 const newRoutes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/login', name: 'Login', component: Login },
+  { path: '/register', name: 'Register', component: Register },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];

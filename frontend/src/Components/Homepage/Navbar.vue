@@ -17,19 +17,44 @@ import { RouterLink } from 'vue-router';
 
     <div class="flex lg:gap-x-12 myPrimaryGap">
       <p
-        class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
-        <RouterLink :to="{ name: 'Home' }"> Home </RouterLink>
+        <RouterLink
+          class="text-myPrimaryDarkGrayColor"
+          :to="{ name: 'Home' }"
+        >
+          Home
+        </RouterLink>
       </p>
       <p
-        class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
-        <RouterLink :to="{ name: 'Dashboard' }"> Dashboard </RouterLink>
+        <RouterLink
+          class="text-myPrimaryDarkGrayColor"
+          :to="{ name: 'Dashboard' }"
+        >
+          Dashboard
+        </RouterLink>
       </p>
       <p
-        class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
-        <RouterLink :to="{ name: 'Login' }"> Login </RouterLink>
+        <RouterLink
+          class="text-myPrimaryDarkGrayColor"
+          :to="{ name: 'Login' }"
+        >
+          Login
+        </RouterLink>
+      </p>
+      <p
+        class="text-sm font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+      >
+        <RouterLink
+          class="text-myPrimaryDarkGrayColor"
+          :to="{ name: 'Register' }"
+        >
+          Sign up
+        </RouterLink>
       </p>
     </div>
   </nav>
