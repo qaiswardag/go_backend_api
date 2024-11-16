@@ -17,7 +17,7 @@ const jobTitle = ref('');
 
 const handlePostJob = async function () {
   console.log(`jobTitle is: ${jobTitle.value}`);
-  console.log(` Job centent here: ...`);
+  console.log(`Job content here: ...`);
   return;
   await handleData(
     `https://www.google.com`,
@@ -29,6 +29,7 @@ const handlePostJob = async function () {
       method: 'POST',
       body: JSON.stringify({
         title: jobTitle.value,
+        content: 'content here',
       }),
     },
     { additionalCallTime: 2000 }
