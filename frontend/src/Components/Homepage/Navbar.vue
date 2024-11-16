@@ -24,6 +24,11 @@ import { RouterLink } from 'vue-router';
       <p
         class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
       >
+        <RouterLink :to="{ name: 'Dashboard' }"> Dashboard </RouterLink>
+      </p>
+      <p
+        class="text-lg font-medium text-myPrimaryDarkGrayColor flex gap-2 items-center cursor-pointer"
+      >
         <RouterLink :to="{ name: 'Login' }"> Login </RouterLink>
       </p>
     </div>

@@ -13,12 +13,11 @@ const {
   isSuccess,
 } = vueFetch();
 
-const email = ref('');
-const password = ref('');
+const jobTitle = ref('');
 
-const handleLogin = async function () {
-  console.log(`email is: ${email.value}`);
-  console.log(`password is: ${password.value}`);
+const handlePostJob = async function () {
+  console.log(`jobTitle is: ${jobTitle.value}`);
+  console.log(` Job centent here: ...`);
   return;
   await handleData(
     `https://www.google.com`,
@@ -29,8 +28,7 @@ const handleLogin = async function () {
       },
       method: 'POST',
       body: JSON.stringify({
-        email: email.value,
-        password: password.value,
+        title: jobTitle.value,
       }),
     },
     { additionalCallTime: 2000 }
@@ -44,7 +42,7 @@ const handleLogin = async function () {
       :descriptionArea="true"
       class="bg-gray-50"
     >
-      <template #title>Login </template>
+      <template #title>Dashboard </template>
 
       <template #content>
         <!-- Form # start -->
@@ -55,10 +53,9 @@ const handleLogin = async function () {
             <h2
               class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
             >
-              Sign in to your account
+              Post a new job
             </h2>
           </div>
-
           <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
               <form
@@ -68,62 +65,26 @@ const handleLogin = async function () {
               >
                 <div>
                   <label
-                    for="email"
+                    for="jobTitle"
                     class="myPrimaryInputLabel"
-                    >Email address</label
+                    >Content</label
                   >
                   <div class="mt-2">
                     <input
-                      v-model="email"
-                      id="email"
-                      name="email"
-                      type="email"
-                      autocomplete="email"
+                      v-model="jobTitle"
+                      id="jobTitle"
+                      name="jobTitle"
+                      type="jobTitle"
                       required=""
                       class="myPrimaryInput"
                     />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    for="password"
-                    class="myPrimaryInputLabel"
-                    >Password</label
-                  >
-                  <div class="mt-2">
-                    <input
-                      v-model="password"
-                      id="password"
-                      name="password"
-                      type="password"
-                      autocomplete="current-password"
-                      required=""
-                      class="myPrimaryInput"
-                    />
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      class="myPrimaryCheckbox"
-                    />
-                    <label
-                      for="remember-me"
-                      class="ml-3 block text-sm/6 text-gray-900"
-                      >Remember me</label
-                    >
                   </div>
                 </div>
 
                 <div>
                   <button
                     type="button"
-                    @click="handleLogin"
+                    @click="handlePostJob"
                     class="myPrimaryButton w-full"
                   >
                     Submit
