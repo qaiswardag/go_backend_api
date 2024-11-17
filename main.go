@@ -18,17 +18,32 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(" http.MethodOptions:", http.MethodOptions)
 
-	// Create a response struct
 	response := struct {
 		Message string `json:"message"`
 	}{
 		Message: "Welcome",
 	}
 
-	// Set the content type to application/json
-	w.Header().Set("Content-Type", "application/json")
+	errorResponse := struct {
+		Error string `json:"error"`
+	}{
+		Error: "Method Not Allowed",
+	}
 
-	// Encode the response as JSON and write it to the response writer
+	// Handle preflight requests
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if true {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+
+		json.NewEncoder(w).Encode(errorResponse)
+		return
+	}
+
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
