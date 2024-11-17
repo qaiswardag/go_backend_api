@@ -13,15 +13,15 @@ const {
   isSuccess,
 } = vueFetch();
 
-const email = ref('');
-const password = ref('');
+const email = ref('qais.wardag@outlook.com');
+const password = ref('123456');
 
 const handleSignUp = async function () {
   console.log(`Register or sign up email is: ${email.value}`);
   console.log(`Register or sign up password is: ${password.value}`);
   return;
   await handleData(
-    `https://www.google.com`,
+    `http://localhost:7070`,
     {
       headers: {
         'Accept-Version': 'v1',
@@ -58,10 +58,7 @@ const handleSignUp = async function () {
 
           <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow rounded-lg sm:px-12">
-              <form
-                class="space-y-6"
-                method="POST"
-              >
+              <form class="space-y-6">
                 <div>
                   <label
                     for="email"

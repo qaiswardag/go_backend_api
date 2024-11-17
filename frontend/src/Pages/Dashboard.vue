@@ -20,7 +20,7 @@ const handlePostJob = async function () {
   console.log(`Job content here: ...`);
   return;
   await handleData(
-    `https://www.google.com`,
+    `http://localhost:7070`,
     {
       headers: {
         'Accept-Version': 'v1',
@@ -87,10 +87,7 @@ const handlePostJob = async function () {
               </div>
               <div>
                 <div>
-                  <form
-                    class="space-y-6"
-                    method="POST"
-                  >
+                  <form class="space-y-6">
                     <div>
                       <label
                         for="jobTitle"

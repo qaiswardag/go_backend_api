@@ -15,7 +15,7 @@ const {
 
 const handleGetJobs = async function () {
   await handleData(
-    `https://www.google.com`,
+    `http://localhost:7070`,
     {
       headers: {
         'Accept-Version': 'v1',

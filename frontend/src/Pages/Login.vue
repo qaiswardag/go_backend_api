@@ -13,16 +13,12 @@ const {
   isSuccess,
 } = vueFetch();
 
-const email = ref('');
-const password = ref('');
+const email = ref('qais.wardag@outlook.com');
+const password = ref('123456');
 
 const handleLogin = async function () {
-  console.log(`Login email is: ${email.value}`);
-  console.log(`Login password is: ${password.value}`);
-  return;
-  await handleData(
-    `https://www.google.com`,
-    {
+  try {
+    const res = await fetch(`http://localhost:7070`, {
       headers: {
         'Accept-Version': 'v1',
         Authorization: 'hello world',
@@ -32,9 +28,15 @@ const handleLogin = async function () {
         email: email.value,
         password: password.value,
       }),
-    },
-    { additionalCallTime: 2000 }
-  );
+    });
+
+    const data = await res.json();
+
+    console.log(`response:`, res);
+    console.log(`data:`, data);
+  } catch (error) {
+    console.log(`error:`, error);
+  }
 };
 </script>
 
@@ -59,9 +61,8 @@ const handleLogin = async function () {
           <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow rounded-lg sm:px-12">
               <form
+                @submit.prevent
                 class="space-y-6"
-                action="#"
-                method="POST"
               >
                 <div>
                   <label
