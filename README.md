@@ -1,6 +1,6 @@
 # About
 
-This project is using the Go programming language. The system aims to provide a transparent and secure platform.
+This project uses the Go programming language. The system aims to provide a transparent and secure platform.
 
 # Features
 
@@ -17,6 +17,24 @@ Utilizes Go for backend development, leveraging its performance, concurrency sup
 #### Authentication
 
 Implements secure authentication using JWT (JSON Web Tokens) for user authentication and session management.
+
+# Installation
+
+#### Using Air
+
+To add Air via `go install` (Recommended) with Go 1.23 or higher:
+
+```
+go install github.com/air-verse/air@latest
+```
+
+```
+nano ~/.zshrc
+export PATH=$PATH:/Users/qaiswardag/go/bin
+```
+
+Run
+air -c .air.toml
 
 # Contributing
 
