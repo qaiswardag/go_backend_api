@@ -13,10 +13,8 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("r:", r)
 
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	// w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
-
-	fmt.Println(" http.MethodOptions:", http.MethodOptions)
 
 	response := struct {
 		Message string `json:"message"`
