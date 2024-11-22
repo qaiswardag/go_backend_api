@@ -5,6 +5,8 @@ import Footer from '@/Components/Homepage/Footer.vue';
 
 <template>
   <Navbar></Navbar>
-  <router-view></router-view>
+  <div class="mx-auto min-h-screen">
+    <router-view></router-view>
+  </div>
   <Footer></Footer>
 </template>
