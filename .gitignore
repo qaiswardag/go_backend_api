@@ -6,7 +6,6 @@
 go_chi
 
 # go
-.air.toml
 build-errors.log
 main
 
