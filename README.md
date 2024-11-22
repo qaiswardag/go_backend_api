@@ -34,7 +34,10 @@ export PATH=$PATH:/Users/qaiswardag/go/bin
 ```
 
 Run
+
+```
 air -c .air.toml
+```
 
 # Contributing
 
