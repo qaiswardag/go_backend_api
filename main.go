@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/support"
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponsesMessages"
-	"github.com/qaiswardag/go_backend_api_jwt/pkg/support"
 )
 
 type Handler struct{}
