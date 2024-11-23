@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/support"
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponsesMessages"
 )
 
@@ -21,23 +23,23 @@ type Handler struct{}
 
 func login(r *http.Request, w http.ResponseWriter) {
 	if r.URL.Path == "/login" && r.Method == http.MethodPost {
-		// fmt.Println("came to login")
-		// sessionToken := support.GenerateToken(32)
-		// http.SetCookie(w, &http.Cookie{
-		// 	Name:     "session_token",
-		// 	Value:    sessionToken,
-		// 	Expires:  time.Now().Add(24 * time.Hour),
-		// 	HttpOnly: false,
-		// })
-		// // Store session_token token in database
+		fmt.Println("came to login")
+		sessionToken := support.GenerateToken(32)
+		http.SetCookie(w, &http.Cookie{
+			Name:     "session_token",
+			Value:    sessionToken,
+			Expires:  time.Now().Add(24 * time.Hour),
+			HttpOnly: false,
+		})
+		// Store session_token token in database
 
-		// csrfToken := support.GenerateToken(32)
-		// http.SetCookie(w, &http.Cookie{
-		// 	Name:     "csrf_token",
-		// 	Value:    csrfToken,
-		// 	Expires:  time.Now().Add(24 * time.Hour),
-		// 	HttpOnly: false,
-		// })
+		csrfToken := support.GenerateToken(32)
+		http.SetCookie(w, &http.Cookie{
+			Name:     "csrf_token",
+			Value:    csrfToken,
+			Expires:  time.Now().Add(24 * time.Hour),
+			HttpOnly: false,
+		})
 		// Store csrf_token token in database
 
 		w.WriteHeader(http.StatusOK)
