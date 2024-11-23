@@ -78,7 +78,7 @@ const handleLogin = async function () {
 
   console.log('Session Token:', getCookie('session_token'));
   console.log('CSRF Token:', getCookie('csrf_token'));
-  console.log(`response:`, typeof data);
+  console.log(`data:`, data);
 };
 </script>
 
@@ -162,6 +162,9 @@ const handleLogin = async function () {
                     type="button"
                     :disabled="isLoading"
                     @click="handleLogin"
+                    :class="{
+                      'opacity-25 cursor-default': isLoading,
+                    }"
                     class="myPrimaryButton w-full"
                   >
                     <template v-if="!isLoading">

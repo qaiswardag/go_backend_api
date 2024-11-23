@@ -1,5 +1,7 @@
 <script setup>
 import FullWidthElement from '@/Components/Layouts/FullWidthElement.vue';
+import { clearCookie } from '@/composables/clearCookie';
+import { getCookie } from '@/composables/getCookie';
 import { vueFetch } from '@/composables/vueFetch';
 import { ref } from 'vue';
 
@@ -17,24 +19,32 @@ const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
 const handleSignUp = async function () {
-  console.log(`Register or sign up email is: ${email.value}`);
-  console.log(`Register or sign up password is: ${password.value}`);
-  return;
-  await handleData(
-    `http://localhost:7070`,
+  clearCookie('session_token');
+  clearCookie('csrf_token');
+
+  const data = await handleData(
+    `http://localhost:7070/login`,
     {
-      headers: {
-        'Accept-Version': 'v1',
-        Authorization: 'hello world',
-      },
       method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Version': '',
+        Authorization: '',
+      },
       body: JSON.stringify({
         email: email.value,
         password: password.value,
       }),
     },
-    { additionalCallTime: 2000 }
+    {
+      additionalCallTime: 2000,
+    }
   );
+
+  console.log('Session Token:', getCookie('session_token'));
+  console.log('CSRF Token:', getCookie('csrf_token'));
+  console.log(`data:`, data);
 };
 </script>
 
@@ -113,10 +123,17 @@ const handleSignUp = async function () {
                 <div>
                   <button
                     type="button"
+                    :disabled="isLoading"
                     @click="handleSignUp"
+                    :class="{
+                      'opacity-25 cursor-default': isLoading,
+                    }"
                     class="myPrimaryButton w-full"
                   >
-                    Submit
+                    <template v-if="!isLoading">
+                      <span> Submit </span>
+                    </template>
+                    <template v-if="isLoading">Loading.. </template>
                   </button>
                 </div>
               </form>
