@@ -32,6 +32,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: false,
 	})
+	// Store session_token token in database
 
 	csrfToken := support.GenerateToken(32)
 	http.SetCookie(w, &http.Cookie{
@@ -40,8 +41,8 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: false,
 	})
+	// Store csrf_token token in database
 
-	// Store both tokens in database
 	json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
 }
 
