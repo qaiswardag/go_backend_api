@@ -1,5 +1,6 @@
 <script setup>
 import FullWidthElement from '@/Components/Layouts/FullWidthElement.vue';
+import { getCookie } from '@/composables/getCookie';
 import { vueFetch } from '@/composables/vueFetch';
 import { ref } from 'vue';
 
@@ -18,6 +19,9 @@ const handleLogin = async function () {
     const res = await fetch(`http://localhost:7070`, {
       credentials: 'include',
     });
+
+    console.log('Session Token:', getCookie('session_token'));
+    console.log('CSRF Token:', getCookie('csrf_token'));
   } catch (error) {
     console.log(`error:`, error);
   }
@@ -62,6 +66,9 @@ const handleLoginUser = async function () {
         password: password.value,
       }),
     });
+
+    console.log('Session Token:', getCookie('session_token'));
+    console.log('CSRF Token:', getCookie('csrf_token'));
 
     const data = await res.json();
 
