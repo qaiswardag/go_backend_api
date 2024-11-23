@@ -12,6 +12,15 @@ import (
 
 type Handler struct{}
 
+func authorize(r *http.Request) {
+	st, err := r.Cookie("session_token")
+
+	if err != nil {
+		fmt.Println("No session token.")
+	}
+	fmt.Println("Session token is:", st)
+}
+
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -23,26 +32,30 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	if r.URL.Path == "/login" && r.Method == http.MethodPost {
+		sessionToken := support.GenerateToken(32)
+		http.SetCookie(w, &http.Cookie{
+			Name:     "session_token",
+			Value:    sessionToken,
+			Expires:  time.Now().Add(24 * time.Hour),
+			HttpOnly: false,
+		})
+		// Store session_token token in database
 
-	sessionToken := support.GenerateToken(32)
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    sessionToken,
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: false,
-	})
-	// Store session_token token in database
+		csrfToken := support.GenerateToken(32)
+		http.SetCookie(w, &http.Cookie{
+			Name:     "csrf_token",
+			Value:    csrfToken,
+			Expires:  time.Now().Add(24 * time.Hour),
+			HttpOnly: false,
+		})
+		// Store csrf_token token in database
 
-	csrfToken := support.GenerateToken(32)
-	http.SetCookie(w, &http.Cookie{
-		Name:     "csrf_token",
-		Value:    csrfToken,
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: false,
-	})
-	// Store csrf_token token in database
-
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(httpResponsesMessages.GetSuccessResponse())
+		return
+	}
+	w.WriteHeader(http.StatusMethodNotAllowed)
 	json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
 }
 

@@ -14,18 +14,18 @@ const {
   isSuccess,
 } = vueFetch();
 
-const handleLogin = async function () {
-  try {
-    const res = await fetch(`http://localhost:7070`, {
-      credentials: 'include',
-    });
+// const handleLogin = async function () {
+//   try {
+//     const res = await fetch(`http://localhost:7070/login`, {
+//       credentials: 'include',
+//     });
 
-    console.log('Session Token:', getCookie('session_token'));
-    console.log('CSRF Token:', getCookie('csrf_token'));
-  } catch (error) {
-    console.log(`error:`, error);
-  }
-};
+//     console.log('Session Token:', getCookie('session_token'));
+//     console.log('CSRF Token:', getCookie('csrf_token'));
+//   } catch (error) {
+//     console.log(`error:`, error);
+//   }
+// };
 //
 //
 //
@@ -51,7 +51,7 @@ const handleLogin = async function () {
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
-const handleLoginUser = async function () {
+const handleLogin = async function () {
   try {
     const res = await fetch(`http://localhost:7070`, {
       method: 'POST',
@@ -68,12 +68,12 @@ const handleLoginUser = async function () {
     });
 
     console.log('Session Token:', getCookie('session_token'));
-    console.log('CSRF Token:', getCookie('csrf_token'));
+    // console.log('CSRF Token:', getCookie('csrf_token'));
 
     const data = await res.json();
 
-    // console.log(`response:`, res);
-    // console.log(`data:`, data);
+    console.log(`response:`, res);
+    console.log(`data:`, data);
   } catch (error) {
     console.log(`error:`, error);
   }

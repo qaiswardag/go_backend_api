@@ -13,3 +13,9 @@ func GetErrorResponse() Messages {
 	m.SetErrorMessage("This is an error message")
 	return m
 }
+
+func GetSuccessResponse() Messages {
+	m := Messages{}
+	m.SetErrorMessage("Everything good")
+	return m
+}
