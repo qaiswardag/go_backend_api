@@ -13,17 +13,32 @@ const {
   isSuccess,
 } = vueFetch();
 
+// const handleLogin = async function () {
+//   try {
+//     const res = await fetch(`http://localhost:7070`);
+//   } catch (error) {
+//     console.log(`error:`, error);
+//   }
+// };
+//
+//
+//
+//
+//
+//
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
 const handleLogin = async function () {
   try {
     const res = await fetch(`http://localhost:7070`, {
-      headers: {
-        'Accept-Version': 'v1',
-        Authorization: 'hello world',
-      },
       method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Version': '',
+        Authorization: '',
+      },
       body: JSON.stringify({
         email: email.value,
         password: password.value,
@@ -32,8 +47,8 @@ const handleLogin = async function () {
 
     const data = await res.json();
 
-    console.log(`response:`, res);
-    console.log(`data:`, data);
+    // console.log(`response:`, res);
+    // console.log(`data:`, data);
   } catch (error) {
     console.log(`error:`, error);
   }

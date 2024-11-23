@@ -15,12 +15,10 @@ const getCookie = function (name) {
   return name + ' not found.';
 };
 
-// Get csrf_token cookie
-
 // Get csrf_token cookie on route change
 router.beforeEach((to, from, next) => {
-  const session_token = getCookie('session_token');
-  console.log('session Token:', csrfToken);
+  const sessionToken = getCookie('session_token');
+  // console.log('session Token:', sessionToken);
 
   const csrfToken = getCookie('csrf_token');
   console.log('CSRF Token:', csrfToken);
