@@ -12,27 +12,18 @@ import (
 
 type Handler struct{}
 
-func authorize(r *http.Request) {
-	st, err := r.Cookie("session_token")
+// func authorize(r *http.Request) {
+// 	st, err := r.Cookie("session_token")
 
-	if err != nil {
-		fmt.Println("No session token.")
-	}
-	fmt.Println("Session token is:", st)
-}
+// 	if err != nil {
+// 		fmt.Println("No session token.")
+// 	}
+// 	fmt.Println("Session token is:", st)
+// }
 
-func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
-
-	if r.Method == http.MethodOptions {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-
+func login(r *http.Request, w http.ResponseWriter) {
 	if r.URL.Path == "/login" && r.Method == http.MethodPost {
+		fmt.Println("came to login")
 		sessionToken := support.GenerateToken(32)
 		http.SetCookie(w, &http.Cookie{
 			Name:     "session_token",
@@ -55,8 +46,26 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(httpResponsesMessages.GetSuccessResponse())
 		return
 	}
-	w.WriteHeader(http.StatusMethodNotAllowed)
-	json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
+	fmt.Println("did not come to login")
+}
+
+func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+	// Handle preflight request
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	login(r, w)
+
+	// Handle other methods
+	// w.WriteHeader(http.StatusMethodNotAllowed)
+	// json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
 }
 
 func main() {
