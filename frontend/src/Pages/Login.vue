@@ -1,5 +1,7 @@
 <script setup>
 import FullWidthElement from '@/Components/Layouts/FullWidthElement.vue';
+import { clearCookie } from '@/composables/clearCookie';
+import { getCookie } from '@/composables/getCookie';
 import { vueFetch } from '@/composables/vueFetch';
 import { ref } from 'vue';
 
@@ -15,7 +17,12 @@ const {
 
 // const handleLogin = async function () {
 //   try {
-//     const res = await fetch(`http://localhost:7070`);
+//     const res = await fetch(`http://localhost:7070/login`, {
+//       credentials: 'include',
+//     });
+
+//     console.log('Session Token:', getCookie('session_token'));
+//     console.log('CSRF Token:', getCookie('csrf_token'));
 //   } catch (error) {
 //     console.log(`error:`, error);
 //   }
@@ -26,12 +33,32 @@ const {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
 const handleLogin = async function () {
-  try {
-    const res = await fetch(`http://localhost:7070`, {
+  clearCookie('session_token');
+  clearCookie('csrf_token');
+
+  const data = await handleData(
+    `http://localhost:7070/login`,
+    {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -43,15 +70,15 @@ const handleLogin = async function () {
         email: email.value,
         password: password.value,
       }),
-    });
+    },
+    {
+      additionalCallTime: 2000,
+    }
+  );
 
-    const data = await res.json();
-
-    // console.log(`response:`, res);
-    // console.log(`data:`, data);
-  } catch (error) {
-    console.log(`error:`, error);
-  }
+  console.log('Session Token:', getCookie('session_token'));
+  console.log('CSRF Token:', getCookie('csrf_token'));
+  console.log(`data:`, data);
 };
 </script>
 
@@ -133,10 +160,17 @@ const handleLogin = async function () {
                 <div>
                   <button
                     type="button"
+                    :disabled="isLoading"
                     @click="handleLogin"
+                    :class="{
+                      'opacity-25 cursor-default': isLoading,
+                    }"
                     class="myPrimaryButton w-full"
                   >
-                    Submit
+                    <template v-if="!isLoading">
+                      <span> Submit </span>
+                    </template>
+                    <template v-if="isLoading">Loading.. </template>
                   </button>
                 </div>
               </form>

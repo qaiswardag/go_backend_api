@@ -1,29 +1,17 @@
 <script setup>
 import Navbar from '@/Components/Homepage/Navbar.vue';
 import Footer from '@/Components/Homepage/Footer.vue';
-import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getCookie } from '@/composables/getCookie';
 
 const router = useRouter();
 
-const getCookie = function (name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop().split(';').shift();
-  }
-  return name + ' not found.';
-};
-
-// Get csrf_token cookie on route change
-router.beforeEach((to, from, next) => {
-  const sessionToken = getCookie('session_token');
-  // console.log('session Token:', sessionToken);
-
-  const csrfToken = getCookie('csrf_token');
-  console.log('CSRF Token:', csrfToken);
-  next();
-});
+// Get cookies
+// router.beforeEach((to, from, next) => {
+//   console.log('Session Token:', getCookie('session_token'));
+//   console.log('CSRF Token:', getCookie('csrf_token'));
+//   next();
+// });
 </script>
 
 <template>
