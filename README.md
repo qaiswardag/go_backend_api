@@ -22,7 +22,7 @@ This is NOT an official standard defined by the core Go dev team. This is a set 
 
 [Standard Go Project Layout](https://github.com/golang-standards/project-layout)
 
-#### Authentication
+# Authentication
 
 Implements secure authentication using JWT (JSON Web Tokens) for user authentication and session management.
 
