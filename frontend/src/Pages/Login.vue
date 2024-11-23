@@ -13,13 +13,31 @@ const {
   isSuccess,
 } = vueFetch();
 
-// const handleLogin = async function () {
-//   try {
-//     const res = await fetch(`http://localhost:7070`);
-//   } catch (error) {
-//     console.log(`error:`, error);
-//   }
-// };
+const handleLogin = async function () {
+  try {
+    const res = await fetch(`http://localhost:7070`, {
+      credentials: 'include',
+    });
+  } catch (error) {
+    console.log(`error:`, error);
+  }
+};
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -29,7 +47,7 @@ const {
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
-const handleLogin = async function () {
+const handleLoginUser = async function () {
   try {
     const res = await fetch(`http://localhost:7070`, {
       method: 'POST',
