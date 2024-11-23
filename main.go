@@ -27,10 +27,10 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
-	// if r.Method == http.MethodOptions {
-	// 	w.WriteHeader(http.StatusOK)
-	// 	return
-	// }
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 
 	if r.URL.Path == "/login" && r.Method == http.MethodPost {
 		sessionToken := support.GenerateToken(32)
