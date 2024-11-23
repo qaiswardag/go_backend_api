@@ -22,7 +22,7 @@ type Handler struct{}
 // }
 
 func login(r *http.Request, w http.ResponseWriter) {
-	if r.URL.Path == "/login" && r.Method == http.MethodPost {
+	if r.URL.Path == "/løgin" && r.Method == http.MethodPost {
 		fmt.Println("came to login")
 		sessionToken := support.GenerateToken(32)
 		http.SetCookie(w, &http.Cookie{
@@ -64,8 +64,8 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	login(r, w)
 
 	// Handle other methods
-	// w.WriteHeader(http.StatusMethodNotAllowed)
-	// json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
+	w.WriteHeader(http.StatusMethodNotAllowed)
+	json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
 }
 
 func main() {

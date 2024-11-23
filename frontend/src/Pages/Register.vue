@@ -64,6 +64,12 @@ const handleSignUp = async function () {
             >
               Sign up today
             </h2>
+            <p class="myPrimaryParagraph my-6">
+              fetchedData: {{ JSON.stringify(fetchedData) }}
+            </p>
+            <p class="myPrimaryParagraph my-6">
+              error: {{ JSON.stringify(error) }}
+            </p>
           </div>
 
           <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">

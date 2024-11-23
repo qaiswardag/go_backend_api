@@ -15,40 +15,6 @@ const {
   isSuccess,
 } = vueFetch();
 
-// const handleLogin = async function () {
-//   try {
-//     const res = await fetch(`http://localhost:7070/login`, {
-//       credentials: 'include',
-//     });
-
-//     console.log('Session Token:', getCookie('session_token'));
-//     console.log('CSRF Token:', getCookie('csrf_token'));
-//   } catch (error) {
-//     console.log(`error:`, error);
-//   }
-// };
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
@@ -98,6 +64,12 @@ const handleLogin = async function () {
             >
               Sign in to your account
             </h2>
+            <p class="myPrimaryParagraph my-6">
+              fetchedData: {{ JSON.stringify(fetchedData) }}
+            </p>
+            <p class="myPrimaryParagraph my-6">
+              error: {{ JSON.stringify(error) }}
+            </p>
           </div>
 
           <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
