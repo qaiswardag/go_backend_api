@@ -56,7 +56,6 @@ export const vueFetch = function vueFetch() {
 
       // Fetch and handle response
       const response = await fetch(url, fetchOptions);
-      console.log('response', response);
 
       // Check if the fetch request was successful. If not, throw an error
       if (response.status !== 200 && response.status !== 201) {
@@ -121,9 +120,6 @@ export const vueFetch = function vueFetch() {
       // Set default error message
       isError.value = true;
       error.value = `Not able to fetch data. Error status: ${err}.`;
-
-      // Fetch response for error handling
-      const response = await fetch(url, fetchOptions);
 
       // Get content type of the response
       const contentType = response.headers.get('content-type') || '';
