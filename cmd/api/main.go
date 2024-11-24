@@ -52,6 +52,7 @@ func login(r *http.Request, w http.ResponseWriter) {
 func getSensitiveData(r *http.Request, w http.ResponseWriter) {
 	if r.URL.Path == "/sensitive-data" && r.Method == http.MethodGet {
 		fmt.Println("came to sensitive data")
+		return
 		cookie, err := r.Cookie("session_token")
 
 		if err != nil {
