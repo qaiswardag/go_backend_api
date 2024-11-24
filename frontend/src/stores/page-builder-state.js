@@ -373,21 +373,24 @@ export const usePageBuilderStateStore = defineStore('pageBuilderState', {
 
       data.search_query = data.search_query || '';
       data.page = data.page || '';
+      try {
+        await handlefetchComponents(
+          '/components.json',
+          {},
+          { additionalCallTime: 500 }
+        );
 
-      await handlefetchComponents(
-        '/components.json',
-        {},
-        { additionalCallTime: 500 }
-      );
-
-      this.setFetchedComponents({
-        fetchedData: fetchedComponents,
-        isError: isErrorComponents,
-        error: errorComponents,
-        errors: errorsComponents,
-        isLoading: isLoadingComponents,
-        isSuccess: isSuccessComponents,
-      });
+        this.setFetchedComponents({
+          fetchedData: fetchedComponents,
+          isError: isErrorComponents,
+          error: errorComponents,
+          errors: errorsComponents,
+          isLoading: isLoadingComponents,
+          isSuccess: isSuccessComponents,
+        });
+      } catch (error) {
+        console.log(`error`, error);
+      }
     },
   },
 });

@@ -14,21 +14,25 @@ const {
 } = vueFetch();
 
 const handleGetJobs = async function () {
-  await handleData(
-    `http://localhost:7070`,
-    {
-      headers: {
-        'Accept-Version': 'v1',
-        Authorization: 'hello world',
+  try {
+    await handleData(
+      `http://localhost:7070`,
+      {
+        headers: {
+          'Accept-Version': 'v1',
+          Authorization: 'hello world',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+        }),
       },
-      method: 'POST',
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value,
-      }),
-    },
-    { additionalCallTime: 2000 }
-  );
+      { additionalCallTime: 2000 }
+    );
+  } catch (error) {
+    console.log(`error:`, error);
+  }
 };
 </script>
 

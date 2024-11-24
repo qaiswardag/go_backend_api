@@ -1,6 +1,7 @@
 <script setup>
 import FullWidthElement from '@/Components/Layouts/FullWidthElement.vue';
 import { vueFetch } from '@/composables/vueFetch';
+import { ca } from 'date-fns/locale';
 import { onMounted, ref } from 'vue';
 
 const {
@@ -29,21 +30,25 @@ const handlePostJob = async function () {
   console.log(`jobTitle is: ${jobTitle.value}`);
   console.log(`Job content here: ...`);
   return;
-  await handleData(
-    `http://localhost:7070`,
-    {
-      headers: {
-        'Accept-Version': 'v1',
-        Authorization: 'hello world',
+  try {
+    await handleData(
+      `http://localhost:7070`,
+      {
+        headers: {
+          'Accept-Version': 'v1',
+          Authorization: 'hello world',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          title: jobTitle.value,
+          content: 'content here',
+        }),
       },
-      method: 'POST',
-      body: JSON.stringify({
-        title: jobTitle.value,
-        content: 'content here',
-      }),
-    },
-    { additionalCallTime: 2000 }
-  );
+      { additionalCallTime: 2000 }
+    );
+  } catch (error) {
+    console.log(`error:`, error);
+  }
 };
 
 //
@@ -111,6 +116,12 @@ const handleGetSensitiveData = async function () {
                   <template v-if="isLoadingGet">Loading.. </template>
                 </button>
               </div>
+              <p class="myPrimaryParagraph my-6">
+                fetchedDataGet: {{ JSON.stringify(fetchedDataGet) }}
+              </p>
+              <p class="myPrimaryParagraph my-6">
+                errorGet: {{ JSON.stringify(errorGet) }}
+              </p>
             </div>
             <ul class="flex flex-col gap-8">
               <li

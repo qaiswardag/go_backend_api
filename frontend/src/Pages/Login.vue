@@ -22,29 +22,32 @@ const handleLogin = async function () {
   clearCookie('session_token');
   clearCookie('csrf_token');
 
-  const data = await handleData(
-    `http://localhost:7070/login`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept-Version': '',
-        Authorization: '',
+  try {
+    const data = await handleData(
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Version': '',
+          Authorization: '',
+        },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+        }),
       },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value,
-      }),
-    },
-    {
-      additionalCallTime: 1000,
-    }
-  );
+      {
+        additionalCallTime: 1000,
+      }
+    );
 
-  console.log('Session Token:', getCookie('session_token'));
-  console.log('CSRF Token:', getCookie('csrf_token'));
-  console.log(`data:`, data);
+    console.log('Session Token:', getCookie('session_token'));
+    console.log('CSRF Token:', getCookie('csrf_token'));
+    console.log(`data:`, data);
+  } catch (error) {
+    console.log(`error:`, error);
+  }
 };
 </script>
 
