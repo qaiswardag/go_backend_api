@@ -65,10 +65,10 @@ const handleGetSensitiveData = async function () {
   const data = await handleDataGet(
     `http://localhost:7070/sensitive-data`,
     {
-      method: 'GET',
+      credentials: 'include',
     },
     {
-      additionalCallTime: 500,
+      additionalCallTime: 1000,
     }
   );
 };

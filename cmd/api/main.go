@@ -22,7 +22,7 @@ type Handler struct{}
 // }
 
 func login(r *http.Request, w http.ResponseWriter) {
-	if r.URL.Path == "/løgin" && r.Method == http.MethodPost {
+	if r.URL.Path == "/login" && r.Method == http.MethodPost {
 		fmt.Println("came to login")
 		sessionToken := support.GenerateToken(32)
 		http.SetCookie(w, &http.Cookie{
@@ -44,25 +44,32 @@ func login(r *http.Request, w http.ResponseWriter) {
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(httpResponsesMessages.GetSuccessResponse())
-		return
 	}
-	fmt.Println("did not come to login")
 }
 
-func getSensitiveData(r *http.Request, w http.ResponseWriter) {
-	if r.URL.Path == "/sensitive-data" && r.Method == http.MethodGet {
-		fmt.Println("came to sensitive data")
-		return
-		cookie, err := r.Cookie("session_token")
+func getSensitiveData(r *http.Request, w http.ResponseWriter, tokenName string) {
+
+	if r.URL.Path == "/sensitive-data" {
+		// Attempt to retrieve the cookie
+		cookie, err := r.Cookie(tokenName)
 
 		if err != nil {
+			// Handle the case where the cookie is not found or other errors occur
 			fmt.Println("err is not nil:", err)
+			http.Error(w, "Unauthorized: session token missing", http.StatusUnauthorized)
+			return
+		}
 
-		}
+		// Check if the cookie value is empty
 		if cookie.Value == "" {
-			fmt.Println("is empty:", cookie)
+			fmt.Printf("Cookie %s is empty: %+v\n", cookie.Name, cookie)
+			http.Error(w, "Unauthorized: session token is empty", http.StatusUnauthorized)
+			return
 		}
-		fmt.Println("token is:", cookie)
+
+		// Log the cookie name and value
+		fmt.Println("Many time...?")
+		// fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
 	}
 }
 
@@ -79,9 +86,12 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	login(r, w)
-	getSensitiveData(r, w)
 
-	if r.URL.Path == "/sensitive-data" || r.URL.Path == "/login" {
+	fmt.Println("aaaannnddd...")
+	getSensitiveData(r, w, "session_token")
+	getSensitiveData(r, w, "csrf_token")
+
+	if r.URL.Path != "/sensitive-data" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
 	}

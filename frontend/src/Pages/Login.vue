@@ -38,7 +38,7 @@ const handleLogin = async function () {
       }),
     },
     {
-      additionalCallTime: 500,
+      additionalCallTime: 1000,
     }
   );
 
