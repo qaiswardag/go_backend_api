@@ -3,5 +3,5 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("drop main file ran")
+	fmt.Println("Drop file ran")
 }
