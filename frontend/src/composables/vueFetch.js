@@ -13,6 +13,8 @@ export const vueFetch = function vueFetch() {
   const goDirectToError = ref(false);
   const fetchedData = ref(null);
 
+  const response = ref(null);
+
   const additionalTime = ref(null);
   const abortTimeout = ref(null);
 
@@ -55,15 +57,18 @@ export const vueFetch = function vueFetch() {
       }
 
       // Fetch and handle response
-      const response = await fetch(url, fetchOptions);
+      response.value = await fetch(url, fetchOptions);
+      console.log('response', response);
 
       // Check if the fetch request was successful. If not, throw an error
-      if (response.status !== 200 && response.status !== 201) {
-        throw new Error(`${response.status}. ${response.statusText}`);
+      if (response.value.status !== 200 && response.value.status !== 201) {
+        throw new Error(
+          `${response.value.status}. ${response.value.statusText}`
+        );
       }
 
       // Parse JSON response when content-type is 'application/json'
-      const contentType = response.headers.get('content-type') || '';
+      const contentType = response.value.headers.get('content-type') || '';
 
       // Content-Type 'application/json'
       if (contentType !== null && contentType.includes('application/json')) {
@@ -72,7 +77,7 @@ export const vueFetch = function vueFetch() {
         isLoading.value = false;
         isError.value = false;
 
-        fetchedData.value = await response.json();
+        fetchedData.value = await response.value.json();
         return fetchedData.value;
       }
       // Content-Type 'text/plain' or 'text/html'
@@ -85,7 +90,7 @@ export const vueFetch = function vueFetch() {
         isLoading.value = false;
         isError.value = false;
 
-        fetchedData.value = await response.text();
+        fetchedData.value = await response.value.text();
         return fetchedData.value;
       }
       // Handle non-GET requests without 'application/json', 'text/plain' or 'text/html'
@@ -122,7 +127,7 @@ export const vueFetch = function vueFetch() {
       error.value = `Not able to fetch data. Error status: ${err}.`;
 
       // Get content type of the response
-      const contentType = response.headers.get('content-type') || '';
+      const contentType = response.value.headers.get('content-type') || '';
 
       // Handle errors when content type is 'application/json'
       if (
@@ -131,7 +136,7 @@ export const vueFetch = function vueFetch() {
         goDirectToError.value !== true
       ) {
         // Parse the response body as JSON
-        const collectingErrorsJson = await response.json();
+        const collectingErrorsJson = await response.value.json();
 
         // Collect backend form validation errors
         errors.value = collectingErrorsJson;
@@ -161,7 +166,7 @@ export const vueFetch = function vueFetch() {
           if (errorsKeys.length === 0) {
             // Set error message when error body is an empty object
             isError.value = true;
-            error.value = `Not able to fetch data. Error status: ${response.status}.`;
+            error.value = `Not able to fetch data. Error status: ${response.value.status}.`;
           }
 
           // If there are errors, handle them accordingly
