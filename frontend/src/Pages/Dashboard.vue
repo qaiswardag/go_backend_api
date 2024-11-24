@@ -62,15 +62,19 @@ const handlePostJob = async function () {
 //
 //
 const handleGetSensitiveData = async function () {
-  const data = await handleDataGet(
-    `http://localhost:7070/sensitive-data`,
-    {
-      credentials: 'include',
-    },
-    {
-      additionalCallTime: 1000,
-    }
-  );
+  try {
+    const data = await handleDataGet(
+      `http://localhost:7070/sensitive-data`,
+      {
+        credentials: 'include',
+      },
+      {
+        additionalCallTime: 1000,
+      }
+    );
+  } catch (error) {
+    console.log(`error:`, error);
+  }
 };
 </script>
 

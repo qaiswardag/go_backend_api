@@ -23,7 +23,6 @@ type Handler struct{}
 
 func login(r *http.Request, w http.ResponseWriter) {
 	if r.URL.Path == "/login" && r.Method == http.MethodPost {
-		fmt.Println("came to login")
 		sessionToken := support.GenerateToken(32)
 		http.SetCookie(w, &http.Cookie{
 			Name:     "session_token",
@@ -68,8 +67,7 @@ func getSensitiveData(r *http.Request, w http.ResponseWriter, tokenName string) 
 		}
 
 		// Log the cookie name and value
-		fmt.Println("Many time...?")
-		// fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
+		fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
 	}
 }
 
@@ -79,17 +77,21 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
+	// Log the request method and URL path
+	fmt.Printf("New:\nIncoming request: %s %s\n\n", r.Method, r.URL.Path)
+
 	// Handle preflight request
+	// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once.
+	// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice.
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
 
-	login(r, w)
+	// login(r, w)
 
-	fmt.Println("aaaannnddd...")
-	getSensitiveData(r, w, "session_token")
-	getSensitiveData(r, w, "csrf_token")
+	// getSensitiveData(r, w, "session_token")
+	// getSensitiveData(r, w, "csrf_token")
 
 	if r.URL.Path != "/sensitive-data" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
