@@ -1,7 +1,7 @@
 <script setup>
 import FullWidthElement from '@/Components/Layouts/FullWidthElement.vue';
 import { vueFetch } from '@/composables/vueFetch';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const {
   handleData,
@@ -11,6 +11,16 @@ const {
   errors,
   isLoading,
   isSuccess,
+} = vueFetch();
+
+const {
+  handleData: handleDataGet,
+  fetchedData: fetchedDataGet,
+  isError: isErrorGet,
+  error: errorGet,
+  errors: errorsGet,
+  isLoading: isLoadingGet,
+  isSuccess: isSuccessGet,
 } = vueFetch();
 
 const jobTitle = ref('');
@@ -35,6 +45,33 @@ const handlePostJob = async function () {
     { additionalCallTime: 2000 }
   );
 };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+const handleGetSensitiveData = async function () {
+  const data = await handleDataGet(
+    `http://localhost:7070/sensitive-data`,
+    {
+      method: 'GET',
+    },
+    {
+      additionalCallTime: 500,
+    }
+  );
+};
 </script>
 
 <template>
@@ -54,6 +91,22 @@ const handlePostJob = async function () {
               >
                 List of data only for logged in users
               </h2>
+              <div class="my-4">
+                <button
+                  type="button"
+                  :disabled="isLoadingGet"
+                  @click="handleGetSensitiveData"
+                  :class="{
+                    'opacity-25 cursor-default': isLoadingGet,
+                  }"
+                  class="myPrimaryButton w-full"
+                >
+                  <template v-if="!isLoadingGet">
+                    <span> Submit </span>
+                  </template>
+                  <template v-if="isLoadingGet">Loading.. </template>
+                </button>
+              </div>
             </div>
             <ul class="flex flex-col gap-8">
               <li

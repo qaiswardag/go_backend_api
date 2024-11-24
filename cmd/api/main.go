@@ -22,7 +22,7 @@ type Handler struct{}
 // }
 
 func login(r *http.Request, w http.ResponseWriter) {
-	if r.URL.Path == "/løgin" && r.Method == http.MethodPost {
+	if r.URL.Path == "/login" && r.Method == http.MethodPost {
 		fmt.Println("came to login")
 		sessionToken := support.GenerateToken(32)
 		http.SetCookie(w, &http.Cookie{
@@ -49,6 +49,22 @@ func login(r *http.Request, w http.ResponseWriter) {
 	fmt.Println("did not come to login")
 }
 
+func getSensitiveData(r *http.Request, w http.ResponseWriter) {
+	if r.URL.Path == "/sensitive-data" && r.Method == http.MethodGet {
+		fmt.Println("came to sensitive data")
+		cookie, err := r.Cookie("session_token")
+
+		if err != nil {
+			fmt.Println("err is not nil:", err)
+
+		}
+		if cookie.Value == "" {
+			fmt.Println("is empty:", cookie)
+		}
+		fmt.Println("token is:", cookie)
+	}
+}
+
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -63,9 +79,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	login(r, w)
 
-	// Handle other methods
-	w.WriteHeader(http.StatusMethodNotAllowed)
-	json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
+	getSensitiveData(r, w)
 }
 
 func main() {
