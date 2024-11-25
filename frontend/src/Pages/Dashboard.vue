@@ -69,7 +69,7 @@ const handlePostJob = async function () {
 const handleGetSensitiveData = async function () {
   try {
     const data = await handleDataGet(
-      `http://localhost:6666/sensitive-data`,
+      `http://localhost:5555/sensitive-data`,
       {
         credentials: 'include',
       },

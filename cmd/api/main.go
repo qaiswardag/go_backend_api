@@ -104,7 +104,7 @@ func main() {
 	handler := Handler{}
 
 	server := http.Server{
-		Addr:    ":6666",
+		Addr:    ":5555",
 		Handler: handler,
 	}
 
