@@ -57,7 +57,6 @@ export const vueFetch = function vueFetch() {
 
       // Fetch and handle response
       response.value = await fetch(url, fetchOptions);
-      console.log(`response`, response.value);
 
       // Check if the fetch request was successful. If not, throw an error
       if (response.value.status !== 200 && response.value.status !== 201) {
@@ -192,16 +191,33 @@ export const vueFetch = function vueFetch() {
               }
             }
           }
+        }
 
-          // If the response's Content-Type is not application/json, handle it accordingly
+        // If the response's Content-Type text/plain, handle it accordingly
+        if (contentType.includes('text/plain')) {
+          const plainText = await response.value.text();
+          // Remove HTML tags using a regular expression
+          const cleanedText = plainText.replace(/<\/?[^>]+(>|$)/g, '');
+          error.value = `Error: ${cleanedText}`;
+        }
 
-          if (
-            !contentType.includes('application/json') ||
-            goDirectToError.value
-          ) {
-            isError.value = true;
-            error.value = `Not able to fetch data. Error status: ${err.message}`;
-          }
+        // If the response's Content-Type text/html, handle it accordingly
+        if (contentType.includes('text/html')) {
+          const htmlContent = await response.value.text();
+
+          // Remove HTML tags using a regular expression
+          const cleanedText = htmlContent.replace(/<\/?[^>]+(>|$)/g, '');
+          error.value = `Error: ${cleanedText}`;
+        }
+
+        if (
+          (!contentType.includes('application/json') &&
+            !contentType.includes('text/plain') &&
+            !contentType.includes('text/html')) ||
+          goDirectToError.value
+        ) {
+          isError.value = true;
+          error.value = `Not able to fetch data. Error status: ${err.message}`;
         }
 
         // Rethrow the error for further handling
