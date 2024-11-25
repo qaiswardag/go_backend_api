@@ -1,9 +1,9 @@
 package httpResponseMessages
 
 type Messages struct {
-	ErrorMessage   string `json:"error_message"`
-	ErrorNotFound  string `json:"error_not_found"`
-	SuccessMessage string `json:"success_message"`
+	ErrorMessage   string `json:"error_message,omitempty"`
+	ErrorNotFound  string `json:"error_not_found,omitempty"`
+	SuccessMessage string `json:"success_message,omitempty"`
 }
 
 func (m *Messages) SetSuccessMessage(message string) {
@@ -19,19 +19,19 @@ func (m *Messages) SetErrorNotFoundMessage(message string) {
 }
 
 func GetSuccessResponse() Messages {
-	m := Messages{}
-	m.SetSuccessMessage("Everything good..")
-	return m
+	return Messages{
+		SuccessMessage: "Everything good..",
+	}
 }
 
 func GetErrorResponse() Messages {
-	m := Messages{}
-	m.SetErrorMessage("This is an error message..")
-	return m
+	return Messages{
+		ErrorMessage: "This is an error message..",
+	}
 }
 
 func GetErrorNotFoundMessage() Messages {
-	m := Messages{}
-	m.SetErrorNotFoundMessage("This is an error message. Page not found..")
-	return m
+	return Messages{
+		ErrorNotFound: "This is an error message. Page not found..",
+	}
 }
