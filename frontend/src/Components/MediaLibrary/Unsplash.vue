@@ -131,7 +131,9 @@ onMounted(() => {
     >
       <p class="myPrimaryParagraphError">{{ getUnsplashImages.error }}</p>
     </div>
-
+    <p class="myPrimaryParagraph my-6 text-myPrimaryErrorColor">
+      {{ getUnsplashImages && getUnsplashImages.error }}
+    </p>
     <div
       v-if="
         getUnsplashImages &&

@@ -24,6 +24,7 @@ frontend/dist
 frontend/dist-ssr
 frontend/*.local
 frontend/.env
+frontend/.env.example
 
 # Editor directories and files
 frontend/.vscode/*
@@ -38,3 +39,4 @@ frontend/*.sw?
 
 frontend/public/css/app.css
 frontend/public/js/app.js
+.env
