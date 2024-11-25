@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/support"
-	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponsesMessages"
+	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponseMessages"
 )
 
 type Handler struct{}
@@ -42,7 +42,7 @@ func login(r *http.Request, w http.ResponseWriter) {
 		// Store csrf_token token in database
 
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(httpResponsesMessages.GetSuccessResponse())
+		json.NewEncoder(w).Encode(httpResponseMessages.GetSuccessResponse())
 	}
 }
 
@@ -95,7 +95,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/sensitive-data" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		json.NewEncoder(w).Encode(httpResponsesMessages.GetErrorResponse())
+		json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
 	}
 
 }

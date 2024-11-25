@@ -1,4 +1,4 @@
-package httpResponsesMessages
+package httpResponseMessages
 
 type Messages struct {
 	ErrorMessage   string `json:"error_message"`
