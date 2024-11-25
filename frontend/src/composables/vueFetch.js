@@ -127,7 +127,8 @@ export const vueFetch = function vueFetch() {
 
       if (
         (contentType && contentType.includes('application/json')) ||
-        (contentType && contentType.includes('text/plain'))
+        (contentType && contentType.includes('text/plain')) ||
+        (contentType && contentType.includes('text/html'))
       ) {
         // Get content type of the response
         const contentType = response.value.headers.get('content-type') || '';

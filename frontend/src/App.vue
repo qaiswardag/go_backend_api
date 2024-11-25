@@ -15,7 +15,7 @@ const router = useRouter();
 </script>
 
 <template>
-  <div>
+  <div class="bg-orange-200">
     <Navbar></Navbar>
     <div class="mx-auto min-h-screen">
       <router-view></router-view>
