@@ -87,6 +87,19 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.URL.Path == "/" {
+		// Set Content-Type before writing the header
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+
+		// Get structured error response as Messages
+		response := httpResponseMessages.GetErrorNotFoundMessage()
+
+		// Encode and send the response
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
 	fmt.Printf("New:\nIncoming request: %s %s\n\n", r.Method, r.URL.Path)
 
 	login(r, w)
