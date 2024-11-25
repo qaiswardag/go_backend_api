@@ -78,7 +78,6 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
 	// Log the request method and URL path
-	fmt.Printf("New:\nIncoming request: %s %s\n\n", r.Method, r.URL.Path)
 
 	// Handle preflight request
 	// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once.
@@ -88,10 +87,12 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Printf("New:\nIncoming request: %s %s\n\n", r.Method, r.URL.Path)
+
 	login(r, w)
 
-	// getSensitiveData(r, w, "session_token")
-	// getSensitiveData(r, w, "csrf_token")
+	getSensitiveData(r, w, "session_token")
+	getSensitiveData(r, w, "csrf_token")
 
 	if r.URL.Path != "/sensitive-data" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
