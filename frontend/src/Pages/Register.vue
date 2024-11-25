@@ -24,7 +24,7 @@ const handleSignUp = async function () {
 
   try {
     const data = await handleData(
-      `http://localhost:7070/login`,
+      `http://localhost:6666/login`,
       {
         method: 'POST',
         credentials: 'include',

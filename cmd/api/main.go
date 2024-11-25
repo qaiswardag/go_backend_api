@@ -88,7 +88,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// login(r, w)
+	login(r, w)
 
 	// getSensitiveData(r, w, "session_token")
 	// getSensitiveData(r, w, "csrf_token")
@@ -104,7 +104,7 @@ func main() {
 	handler := Handler{}
 
 	server := http.Server{
-		Addr:    ":7070",
+		Addr:    ":6666",
 		Handler: handler,
 	}
 
