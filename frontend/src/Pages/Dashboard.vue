@@ -66,10 +66,10 @@ const handlePostJob = async function () {
 //
 //
 //
-const handleGetSensitiveData = async function () {
+const handleGetAuthUser = async function () {
   try {
     const data = await handleDataGet(
-      `http://localhost:5555/sensitive-data`,
+      `http://localhost:5555/get-auth-user`,
       {
         credentials: 'include',
       },
@@ -104,7 +104,7 @@ const handleGetSensitiveData = async function () {
                 <button
                   type="button"
                   :disabled="isLoadingGet"
-                  @click="handleGetSensitiveData"
+                  @click="handleGetAuthUser"
                   :class="{
                     'opacity-25 cursor-default': isLoadingGet,
                   }"

@@ -18,7 +18,7 @@ const {
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
-const handleSignUp = async function () {
+const handleA = async function () {
   clearCookie('session_token');
   clearCookie('csrf_token');
 
@@ -39,7 +39,7 @@ const handleSignUp = async function () {
         }),
       },
       {
-        additionalCallTime: 2000,
+        additionalCallTime: 1000,
       }
     );
 
@@ -55,7 +55,7 @@ const handleSignUp = async function () {
 <template>
   <div>
     <FullWidthElement :descriptionArea="true">
-      <template #title>Sign up</template>
+      <template #title>Login</template>
 
       <template #content>
         <!-- Form # start -->
@@ -66,7 +66,7 @@ const handleSignUp = async function () {
             <h2
               class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
             >
-              Sign up today
+              Sign up today!
             </h2>
             <p class="myPrimaryParagraph my-6">
               fetchedData: {{ JSON.stringify(fetchedData) }}
@@ -78,7 +78,10 @@ const handleSignUp = async function () {
 
           <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow rounded-lg sm:px-12">
-              <form class="space-y-6">
+              <form
+                @submit.prevent
+                class="space-y-6"
+              >
                 <div>
                   <label
                     for="email"
@@ -134,7 +137,7 @@ const handleSignUp = async function () {
                   <button
                     type="button"
                     :disabled="isLoading"
-                    @click="handleSignUp"
+                    @click="handleA"
                     :class="{
                       'opacity-25 cursor-default': isLoading,
                     }"
