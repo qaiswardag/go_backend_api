@@ -18,7 +18,7 @@ const {
 const email = ref('qais.wardag@outlook.com');
 const password = ref('123456');
 
-const handleA = async function () {
+const handleForm = async function () {
   clearCookie('session_token');
   clearCookie('csrf_token');
 
@@ -137,7 +137,7 @@ const handleA = async function () {
                   <button
                     type="button"
                     :disabled="isLoading"
-                    @click="handleA"
+                    @click="handleForm"
                     :class="{
                       'opacity-25 cursor-default': isLoading,
                     }"
