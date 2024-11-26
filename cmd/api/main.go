@@ -66,7 +66,6 @@ func getAuthUser(r *http.Request, w http.ResponseWriter, tokenName string) {
 
 		// Compare session token again stored session token in database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
-			fmt.Println("aaaaaand")
 
 			// response
 			// Set Content-Type to application/json to indicate the response is JSON
