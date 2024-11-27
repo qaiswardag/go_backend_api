@@ -69,10 +69,15 @@ const handleForm = async function () {
               Sign up today!
             </h2>
             <p class="myPrimaryParagraph my-6">
+              type of fetchedDataGet: {{ typeof fetchedData }}
+              <br />
               fetchedData: {{ JSON.stringify(fetchedData) }}
             </p>
             <p class="myPrimaryParagraph my-6">
-              error: {{ JSON.stringify(error) }}
+              type of error:
+              {{ typeof error }}
+              <br />
+              error:{{ JSON.stringify(error) }}
             </p>
           </div>
 
