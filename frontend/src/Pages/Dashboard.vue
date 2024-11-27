@@ -117,10 +117,15 @@ const handleGetAuthUser = async function () {
                 </button>
               </div>
               <p class="myPrimaryParagraph my-6">
+                type of fetchedDataGet: {{ typeof fetchedDataGet }}
+                <br />
                 fetchedDataGet: {{ JSON.stringify(fetchedDataGet) }}
               </p>
               <p class="myPrimaryParagraph my-6">
-                errorGet: {{ JSON.stringify(errorGet) }}
+                type of error:
+                {{ typeof errorGet }}
+                <br />
+                error:{{ JSON.stringify(errorGet) }}
               </p>
             </div>
             <ul class="flex flex-col gap-8">

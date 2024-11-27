@@ -12,6 +12,16 @@ import (
 
 type Handler struct{}
 
+func UserObject() map[string]interface{} {
+	// Response data
+	return map[string]interface{}{
+		"user": map[string]string{
+			"firstName": "John",
+			"lastName":  "Doe",
+		},
+	}
+}
+
 func HandleLogin(r *http.Request, w http.ResponseWriter) {
 	if r.URL.Path == "/login" && r.Method == http.MethodPost {
 		// sessionToken := support.GenerateToken(32)
@@ -37,32 +47,45 @@ func HandleLogin(r *http.Request, w http.ResponseWriter) {
 		// Set Content-Type to application/json to indicate the response is JSON
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(httpResponseMessages.GetSuccessResponse())
+		// Encode and send the JSON response
+		if err := json.NewEncoder(w).Encode(UserObject()); err != nil {
+			fmt.Printf("Error encoding JSON response: %v\n", err)
+		}
+		return
 	}
 }
 
 func GetAuthUser(r *http.Request, w http.ResponseWriter) {
-
 	if r.URL.Path == "/get-auth-user" {
 		// Attempt to retrieve the cookie
 		cookie, err := r.Cookie("session_token")
 
 		if err != nil {
-			// Handle the case where the cookie is not found or other errors occur
-			fmt.Println("err is not nil:", err)
-			http.Error(w, "Unauthorized: session token missing", http.StatusUnauthorized)
+			fmt.Printf("Error: %v", cookie)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
 			return
 		}
 
 		// Check if the cookie value is empty
 		if cookie.Value == "" {
 			fmt.Printf("Cookie %s is empty: %+v\n", cookie.Name, cookie)
-			http.Error(w, "Unauthorized: session token is empty", http.StatusUnauthorized)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
 			return
 		}
 
-		// Log the cookie name and value
-		fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
+		// Compare the session token with the stored session token in the database
+		if cookie.Name != "session_token" && cookie.Value != "1234" {
+			fmt.Println("herrrr..")
+			// response
+			// Set Content-Type to application/json to indicate the response is JSON
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
+		}
 
 		// Compare the session token with the stored session token in the database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
@@ -71,17 +94,13 @@ func GetAuthUser(r *http.Request, w http.ResponseWriter) {
 			// Set Content-Type to application/json to indicate the response is JSON
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(httpResponseMessages.GetSuccessResponse())
+			// Encode and send the JSON response
+			if err := json.NewEncoder(w).Encode(UserObject()); err != nil {
+				fmt.Printf("Error encoding JSON response: %v\n", err)
+			}
+			// Log the cookie name and value
+			fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
 			return
-		}
-
-		// Compare the session token with the stored session token in the database
-		if cookie.Name != "session_token" && cookie.Value != "1234" {
-			// response
-			// Set Content-Type to application/json to indicate the response is JSON
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
 		}
 
 	}
