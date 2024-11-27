@@ -66,10 +66,10 @@ const handlePostJob = async function () {
 //
 //
 //
-const handleGetAuthUser = async function () {
+const handleSubmit = async function () {
   try {
     const data = await handleDataGet(
-      `http://localhost:5555/get-auth-user`,
+      `http://localhost:5555/validate-session`,
       {
         credentials: 'include',
       },
@@ -104,7 +104,7 @@ const handleGetAuthUser = async function () {
                 <button
                   type="button"
                   :disabled="isLoadingGet"
-                  @click="handleGetAuthUser"
+                  @click="handleSubmit"
                   :class="{
                     'opacity-25 cursor-default': isLoadingGet,
                   }"
