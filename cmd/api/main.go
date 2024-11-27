@@ -55,8 +55,8 @@ func HandleLogin(r *http.Request, w http.ResponseWriter) {
 	}
 }
 
-func GetAuthUser(r *http.Request, w http.ResponseWriter) {
-	if r.URL.Path == "/get-auth-user" {
+func HandleSession(r *http.Request, w http.ResponseWriter) {
+	if r.URL.Path == "/validate-session" {
 		// Attempt to retrieve the cookie
 		cookie, err := r.Cookie("session_token")
 
@@ -154,10 +154,10 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	HandleLogin(r, w)
 
-	GetAuthUser(r, w)
+	HandleSession(r, w)
 	// GetCsrfToken(r, w)
 
-	if r.URL.Path != "/get-auth-user" && r.URL.Path != "/login" && r.Method != http.MethodGet {
+	if r.URL.Path != "/validate-session" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
 	}
