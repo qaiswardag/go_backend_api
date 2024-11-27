@@ -136,9 +136,10 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleLogin(r, w)
 
 	getAuthUser(r, w, "session_token")
+	getAuthUser(r, w, "csrf_token")
 	// getCsrfToken(r, w, "csrf_token")
 
-	if r.URL.Path != "/sensitive-data" && r.URL.Path != "/login" && r.Method != http.MethodGet {
+	if r.URL.Path != "/get-auth-user" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
 	}
