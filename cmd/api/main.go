@@ -155,7 +155,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	HandleLogin(r, w)
 
 	HandleSession(r, w)
-	// GetCsrfToken(r, w)
+	// HandleCsrfToken(r, w)
 
 	if r.URL.Path != "/validate-session" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
