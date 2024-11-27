@@ -12,7 +12,7 @@ import (
 
 type Handler struct{}
 
-func handleLogin(r *http.Request, w http.ResponseWriter) {
+func HandleLogin(r *http.Request, w http.ResponseWriter) {
 	if r.URL.Path == "/login" && r.Method == http.MethodPost {
 		// sessionToken := support.GenerateToken(32)
 		sessionToken := "1234"
@@ -22,7 +22,7 @@ func handleLogin(r *http.Request, w http.ResponseWriter) {
 			Expires:  time.Now().Add(24 * time.Hour),
 			HttpOnly: false,
 		})
-		// Store session_token token in database
+		// Store the session token in the database.
 
 		csrfToken := support.GenerateToken(32)
 		http.SetCookie(w, &http.Cookie{
@@ -41,11 +41,11 @@ func handleLogin(r *http.Request, w http.ResponseWriter) {
 	}
 }
 
-func getAuthUser(r *http.Request, w http.ResponseWriter, tokenName string) {
+func GetAuthUser(r *http.Request, w http.ResponseWriter) {
 
 	if r.URL.Path == "/get-auth-user" {
 		// Attempt to retrieve the cookie
-		cookie, err := r.Cookie(tokenName)
+		cookie, err := r.Cookie("session_token")
 
 		if err != nil {
 			// Handle the case where the cookie is not found or other errors occur
@@ -64,7 +64,7 @@ func getAuthUser(r *http.Request, w http.ResponseWriter, tokenName string) {
 		// Log the cookie name and value
 		fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
 
-		// Compare session token again stored session token in database
+		// Compare the session token with the stored session token in the database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
 
 			// response
@@ -75,7 +75,7 @@ func getAuthUser(r *http.Request, w http.ResponseWriter, tokenName string) {
 			return
 		}
 
-		// Compare session token again stored session token in database
+		// Compare the session token with the stored session token in the database
 		if cookie.Name != "session_token" && cookie.Value != "1234" {
 			// response
 			// Set Content-Type to application/json to indicate the response is JSON
@@ -88,31 +88,31 @@ func getAuthUser(r *http.Request, w http.ResponseWriter, tokenName string) {
 }
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// This is important for enabling cross-origin requests, especially from a frontend on a different domain.
+	// This is important for enabling cross-origin requests, especially from a frontend on a different domain
 	// Allows requests from the specified origin (localhost:7777) to access the resource
-	// Only requests coming from http://localhost:7777 are allowed to access the backend.
+	// Only requests coming from http://localhost:7777 are allowed to access the backend
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:7777")
 
 	// Set to true means that the frontend is allowed to send cookies (or session tokens)
-	// If false, the frontend will not send any cookies or authorization headers when making requests to the backend.
-	// Specifies whether the browser should include credentials (cookies, HTTP authentication, etc.) in the request.
-	// This is needed if the server requires authentication (e.g., via cookies or session tokens).
+	// If false, the frontend will not send any cookies or authorization headers when making requests to the backend
+	// Specifies whether the browser should include credentials (cookies, HTTP authentication, etc.) in the request
+	//This is required if the server needs authentication (e.g., via cookies or session tokens)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
-	// Specifies which HTTP methods (GET, POST, PUT, DELETE, OPTIONS) the client is allowed to use for the request.
-	// This is typically part of the preflight response to tell the client what methods are supported by the server.
+	// Specifies which HTTP methods (GET, POST, PUT, DELETE, OPTIONS) the client is allowed to use for the request
+	// This is typically part of the preflight response to tell the client what methods are supported by the server
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	// Specifies which headers can be included in the actual request.
-	// For example, `Authorization` header is included here, which tells the frontend it is allowed to send an Authorization token.
-	// The frontend can send an Authorization token in the header without being blocked by the CORS policy.
+	// Specifies which headers can be included in the actual request
+	// For example, `Authorization` header is included here, which tells the frontend it is allowed to send an Authorization token
+	// The frontend can send an Authorization token in the header without being blocked by the CORS policy
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
 
 	// Log the request method and URL path
 
 	// Handle preflight request
-	// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once.
-	// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice.
+	// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
+	// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusOK)
 		return
@@ -133,11 +133,10 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("New:\nIncoming request: %s %s\n\n", r.Method, r.URL.Path)
 
-	handleLogin(r, w)
+	HandleLogin(r, w)
 
-	getAuthUser(r, w, "session_token")
-	getAuthUser(r, w, "csrf_token")
-	// getCsrfToken(r, w, "csrf_token")
+	GetAuthUser(r, w)
+	// GetCsrfToken(r, w)
 
 	if r.URL.Path != "/get-auth-user" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
