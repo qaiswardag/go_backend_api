@@ -44,13 +44,12 @@ func HandleLogin(r *http.Request, w http.ResponseWriter) {
 		// Store csrf_token token in database
 
 		// response
-		// Set Content-Type to application/json to indicate the response is JSON
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		// Encode and send the JSON response
 		if err := json.NewEncoder(w).Encode(UserObject()); err != nil {
 			fmt.Printf("Error encoding JSON response: %v\n", err)
 		}
+
 		return
 	}
 }
@@ -81,7 +80,6 @@ func HandleSession(r *http.Request, w http.ResponseWriter) {
 		if cookie.Name != "session_token" && cookie.Value != "1234" {
 			fmt.Println("herrrr..")
 			// response
-			// Set Content-Type to application/json to indicate the response is JSON
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
@@ -91,13 +89,12 @@ func HandleSession(r *http.Request, w http.ResponseWriter) {
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
 
 			// response
-			// Set Content-Type to application/json to indicate the response is JSON
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			// Encode and send the JSON response
 			if err := json.NewEncoder(w).Encode(UserObject()); err != nil {
 				fmt.Printf("Error encoding JSON response: %v\n", err)
 			}
+
 			// Log the cookie name and value
 			fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
 			return
@@ -155,7 +152,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	HandleLogin(r, w)
 
 	HandleSession(r, w)
-	// GetCsrfToken(r, w)
+	// HandleCsrfToken(r, w)
 
 	if r.URL.Path != "/validate-session" && r.URL.Path != "/login" && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
