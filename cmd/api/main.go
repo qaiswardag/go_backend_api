@@ -54,7 +54,7 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func HandleSession(w http.ResponseWriter, r *http.Request) {
+func AuthValidationMiddleware(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/validate-session" {
 		// Attempt to retrieve the cookie
 		cookie, err := r.Cookie("session_token")
@@ -144,7 +144,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/login", HandleLogin)
-	mux.HandleFunc("/validate-session", HandleSession)
+	mux.HandleFunc("/validate-session", AuthValidationMiddleware)
 
 	handler := Middleware(mux)
 
