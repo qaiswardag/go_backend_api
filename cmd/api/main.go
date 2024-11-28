@@ -91,9 +91,9 @@ func HandleSession(r *http.Request, w http.ResponseWriter) {
 			// response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			// if err := json.NewEncoder(w).Encode(UserObject()); err != nil {
-			// 	fmt.Printf("Error encoding JSON response: %v\n", err)
-			// }
+			if err := json.NewEncoder(w).Encode(UserObject()); err != nil {
+				fmt.Printf("Error encoding JSON response: %v\n", err)
+			}
 
 			// Log the cookie name and value
 			fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
