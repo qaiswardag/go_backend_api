@@ -16,6 +16,7 @@ export const vueFetch = function vueFetch() {
   const abortTimeout = ref(null);
 
   const response = ref(null);
+  const streamAlreadyRead = ref(null);
 
   // Function to handle data fetching and state updates
   const handleData = async function (
@@ -71,6 +72,17 @@ export const vueFetch = function vueFetch() {
 
       // Content-Type 'application/json'
       if (contentType !== null && contentType.includes('application/json')) {
+        // Check if response body is empty
+        // Read the response as text first
+        const jsonText = await response.value.text();
+        if (!jsonText.trim()) {
+          streamAlreadyRead.value = true;
+          throw new Error(
+            'Error 500. The backend indicated the response and content type is JSON but response body is empty'
+          );
+        }
+
+        streamAlreadyRead.value = true;
         clearTimeout(timer);
         isSuccess.value = true;
         isLoading.value = false;
@@ -79,6 +91,7 @@ export const vueFetch = function vueFetch() {
         fetchedData.value = await response.value.json();
         return fetchedData.value;
       }
+
       // Content-Type 'text/plain' or 'text/html'
       if (
         (contentType !== null && contentType.includes('text/plain')) ||
@@ -92,6 +105,7 @@ export const vueFetch = function vueFetch() {
         fetchedData.value = await response.value.text();
         return fetchedData.value;
       }
+
       // Handle non-GET requests without 'application/json', 'text/plain' or 'text/html'
       if (
         fetchOptions?.method !== 'GET' &&
@@ -105,6 +119,7 @@ export const vueFetch = function vueFetch() {
         fetchedData.value = 'Your request was processed successfully.';
         return 'Your request was processed successfully.';
       }
+
       // Handle GET requests without 'application/json' content-type
       clearTimeout(timer);
       isSuccess.value = true;
@@ -127,7 +142,11 @@ export const vueFetch = function vueFetch() {
         // Get content type of the response
         const contentType = response.value.headers.get('content-type') || '';
 
-        if (contentType.includes('application/json')) {
+        if (
+          contentType.includes('application/json') &&
+          !streamAlreadyRead.value
+        ) {
+          console.log('two..', JSON.stringify(response.value));
           // Handle errors when content type is 'application/json'
           if (goDirectToError.value !== true) {
             // Parse the response body as JSON
