@@ -69,7 +69,7 @@ const handlePostJob = async function () {
 const handleSubmit = async function () {
   try {
     const data = await handleDataGet(
-      `http://localhost:5555/validate-session`,
+      `http://localhost:5555/auth/validate`,
       {
         credentials: 'include',
       },
