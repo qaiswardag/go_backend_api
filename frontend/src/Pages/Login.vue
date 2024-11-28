@@ -77,7 +77,7 @@ const handleForm = async function () {
               type of error:
               {{ typeof error }}
               <br />
-              error:{{ JSON.stringify(error) }}
+              error: {{ JSON.stringify(error) }}
             </p>
           </div>
 

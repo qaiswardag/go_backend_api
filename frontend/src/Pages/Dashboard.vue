@@ -125,7 +125,7 @@ const handleSubmit = async function () {
                 type of error:
                 {{ typeof errorGet }}
                 <br />
-                error:{{ JSON.stringify(errorGet) }}
+                error: {{ JSON.stringify(errorGet) }}
               </p>
             </div>
             <ul class="flex flex-col gap-8">

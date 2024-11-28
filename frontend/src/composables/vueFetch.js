@@ -72,16 +72,6 @@ export const vueFetch = function vueFetch() {
 
       // Content-Type 'application/json'
       if (contentType !== null && contentType.includes('application/json')) {
-        // Check if response body is empty
-        // Read the response as text first
-        const jsonText = await response.value.text();
-        if (!jsonText.trim()) {
-          streamAlreadyRead.value = true;
-          throw new Error(
-            'Error 500. The backend indicated the response and content type is JSON but response body is empty'
-          );
-        }
-
         streamAlreadyRead.value = true;
         clearTimeout(timer);
         isSuccess.value = true;
@@ -97,6 +87,7 @@ export const vueFetch = function vueFetch() {
         (contentType !== null && contentType.includes('text/plain')) ||
         contentType.includes('text/html')
       ) {
+        streamAlreadyRead.value = true;
         clearTimeout(timer);
         isSuccess.value = true;
         isLoading.value = false;
@@ -214,7 +205,7 @@ export const vueFetch = function vueFetch() {
         }
 
         // If the response's Content-Type text/plain, handle it accordingly
-        if (contentType.includes('text/plain')) {
+        if (contentType.includes('text/plain') && !streamAlreadyRead.value) {
           const plainText = await response.value.text();
           // Remove HTML tags using a regular expression
           const cleanedText = plainText.replace(/<\/?[^>]+(>|$)/g, '');
@@ -222,7 +213,7 @@ export const vueFetch = function vueFetch() {
         }
 
         // If the response's Content-Type text/html, handle it accordingly
-        if (contentType.includes('text/html')) {
+        if (contentType.includes('text/html') && !streamAlreadyRead.value) {
           const htmlContent = await response.value.text();
 
           // Remove HTML tags using a regular expression
