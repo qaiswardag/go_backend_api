@@ -146,7 +146,6 @@ export const vueFetch = function vueFetch() {
           contentType.includes('application/json') &&
           !streamAlreadyRead.value
         ) {
-          console.log('two..', JSON.stringify(response.value));
           // Handle errors when content type is 'application/json'
           if (goDirectToError.value !== true) {
             // Parse the response body as JSON
