@@ -11,10 +11,12 @@ import (
 func main() {
 	// Load environment variables file
 	config.LoadEnv()
+	serverAddr := config.GetCORSOrigin("SERVER_ADDR")
+
 	handler := routes.SetupRoutes()
 
 	server := http.Server{
-		Addr:    ":5555",
+		Addr:    serverAddr,
 		Handler: handler,
 	}
 

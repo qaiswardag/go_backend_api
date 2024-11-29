@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -16,6 +15,5 @@ func LoadEnv() {
 }
 
 func GetCORSOrigin(key string) string {
-	fmt.Println("den er:", os.Getenv(key))
 	return os.Getenv(key)
 }
