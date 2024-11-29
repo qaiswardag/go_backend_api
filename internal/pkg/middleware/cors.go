@@ -40,6 +40,17 @@ func Cors(next http.Handler) http.Handler {
 		// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
 		// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice
 		if r.Method == http.MethodOptions {
+
+			// header('Access-Control-Allow-Methods: POST, PATCH, DELETE, OPTIONS');
+			// header('Access-Control-Allow-Headers: Authorization, Content-Type');
+			// header('Access-Control-Max-age: 86400');
+			// $response = new Response();
+			// $response->setHttpStatusCode(200);
+			// $response->setSuccess(true);
+			// $response->addMessage('Preflight OPTIONS check');
+			// $response->send();
+			// exit;
+
 			w.WriteHeader(http.StatusOK)
 			return
 		}
