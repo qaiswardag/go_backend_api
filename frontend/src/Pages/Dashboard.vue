@@ -89,33 +89,32 @@ const handleSubmit = async function () {
       <template #title>Dashboard</template>
 
       <template #content>
-        <div class="flex gap-8">
+        <div class="flex gap-8 w-full justify-center">
           <!-- Data for logged in users # start -->
           <div
-            class="w-full bg-gray-300 border-2 border-gray-600 py-8 px-4 rounded-lg"
+            class="w-1/2 bg-gray-300 border-2 border-gray-600 py-8 px-4 rounded-lg"
           >
-            <div class="sm:mx-auto sm:w-full sm:max-w-md">
-              <h2
-                class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+            <h2
+              class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+            >
+              List of data only for logged in users
+            </h2>
+            <div class="my-4">
+              <button
+                type="button"
+                :disabled="isLoadingGet"
+                @click="handleSubmit"
+                :class="{
+                  'opacity-25 cursor-default': isLoadingGet,
+                }"
+                class="myPrimaryButton w-full"
               >
-                List of data only for logged in users
-              </h2>
-              <div class="my-4">
-                <button
-                  type="button"
-                  :disabled="isLoadingGet"
-                  @click="handleSubmit"
-                  :class="{
-                    'opacity-25 cursor-default': isLoadingGet,
-                  }"
-                  class="myPrimaryButton w-full"
-                >
-                  <template v-if="!isLoadingGet">
-                    <span> Submit </span>
-                  </template>
-                  <template v-if="isLoadingGet">Loading.. </template>
-                </button>
-              </div>
+                <template v-if="!isLoadingGet">
+                  <span> Submit </span>
+                </template>
+                <template v-if="isLoadingGet">Loading.. </template>
+              </button>
+
               <p class="myPrimaryParagraph my-6">
                 type of fetchedDataGet: {{ typeof fetchedDataGet }}
                 <br />
@@ -148,47 +147,43 @@ const handleSubmit = async function () {
           <!-- Data for logged in users # end -->
           <!-- Form # start -->
           <div
-            class="w-full bg-gray-300 border-2 border-gray-600 py-8 px-4 rounded-lg"
+            class="w-1/2 bg-gray-300 border-2 border-gray-600 py-8 px-4 rounded-lg"
           >
+            <h2
+              class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+            >
+              Post a new job
+            </h2>
             <div>
-              <div class="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2
-                  class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-                >
-                  Post a new job
-                </h2>
-              </div>
               <div>
-                <div>
-                  <form class="space-y-6">
-                    <div>
-                      <label
-                        for="jobTitle"
-                        class="myPrimaryInputLabel"
-                        >Content</label
-                      >
-                      <div class="mt-2">
-                        <input
-                          v-model="jobTitle"
-                          id="jobTitle"
-                          name="jobTitle"
-                          type="jobTitle"
-                          class="myPrimaryInput"
-                        />
-                      </div>
+                <form class="space-y-6">
+                  <div>
+                    <label
+                      for="jobTitle"
+                      class="myPrimaryInputLabel"
+                      >Content</label
+                    >
+                    <div class="mt-2">
+                      <input
+                        v-model="jobTitle"
+                        id="jobTitle"
+                        name="jobTitle"
+                        type="jobTitle"
+                        class="myPrimaryInput"
+                      />
                     </div>
+                  </div>
 
-                    <div>
-                      <button
-                        type="button"
-                        @click="handlePostJob"
-                        class="myPrimaryButton w-full"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                  <div>
+                    <button
+                      type="button"
+                      @click="handlePostJob"
+                      class="myPrimaryButton w-full"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
