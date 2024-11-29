@@ -1,7 +1,11 @@
 package model
 
-type User struct {
-	id        string
-	firstName string
-	lastName  string
+func UserObject() map[string]interface{} {
+	// Response data
+	return map[string]interface{}{
+		"user": map[string]string{
+			"firstName": "John",
+			"lastName":  "Doe",
+		},
+	}
 }
