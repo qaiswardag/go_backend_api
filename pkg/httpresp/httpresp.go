@@ -1,4 +1,4 @@
-package responses
+package httpresp
 
 type Messages struct {
 	ErrorMessage   string `json:"error_message,omitempty"`
