@@ -66,8 +66,12 @@ func SetupRoutes() http.Handler {
 		}
 	})
 
-	mux.HandleFunc("/login", HandleLoginRoute)
+	mux.Handle("/login", middleware.Cors(http.HandlerFunc(HandleLoginRoute)))
+
 	protectedMux.HandleFunc("/user/settings", HandleUserSettingsRoute)
 
-	return protectedHandler
+	// Combine both muxes
+	mux.Handle("/user/settings", protectedHandler)
+
+	return mux
 }
