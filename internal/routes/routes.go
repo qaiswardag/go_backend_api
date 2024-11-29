@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/middleware"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/model"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/support"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/support"
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponseMessages"
 )
 

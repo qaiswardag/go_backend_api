@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/model"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponseMessages"
 )
 

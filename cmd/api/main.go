@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/pkg/routes"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/routes"
 )
 
 func main() {
