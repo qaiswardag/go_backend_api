@@ -7,13 +7,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func LoadEnv() {
+func LoadEnvironmentFile() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 }
 
-func GetCORSOrigin(key string) string {
+func GetEnvironmentVariable(key string) string {
 	return os.Getenv(key)
 }

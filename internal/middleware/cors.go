@@ -12,7 +12,7 @@ func Cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("CORS before preflight")
 
-		allowedOrigins := config.GetCORSOrigin("CORS_ALLOW_ORIGIN")
+		allowedOrigins := config.GetEnvironmentVariable("CORS_ALLOW_ORIGIN")
 
 		// This is important for enabling cross-origin requests, especially from a frontend on a different domain
 		// Set the response content type to JSON with UTF-8 encoding

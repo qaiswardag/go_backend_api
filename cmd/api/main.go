@@ -10,8 +10,8 @@ import (
 
 func main() {
 	// Load environment variables file
-	config.LoadEnv()
-	serverAddr := config.GetCORSOrigin("SERVER_ADDR")
+	config.LoadEnvironmentFile()
+	serverAddr := config.GetEnvironmentVariable("SERVER_ADDR")
 
 	handler := routes.SetupRoutes()
 
