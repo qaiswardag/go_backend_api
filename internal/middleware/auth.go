@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
-	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponseMessages"
+	"github.com/qaiswardag/go_backend_api_jwt/pkg/responses"
 )
 
 func Auth(next http.Handler) http.Handler {
@@ -17,7 +17,7 @@ func Auth(next http.Handler) http.Handler {
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
+			json.NewEncoder(w).Encode(responses.GetErrorResponse())
 			fmt.Println("User authorization failed")
 			return
 		}
@@ -27,7 +27,7 @@ func Auth(next http.Handler) http.Handler {
 			fmt.Printf("Cookie %s is empty: %+v\n", cookie.Name, cookie)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
+			json.NewEncoder(w).Encode(responses.GetErrorResponse())
 			fmt.Println("User authorization failed")
 			return
 		}
@@ -38,7 +38,7 @@ func Auth(next http.Handler) http.Handler {
 			// response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(httpResponseMessages.GetErrorResponse())
+			json.NewEncoder(w).Encode(responses.GetErrorResponse())
 			fmt.Println("User authorization failed")
 		}
 

@@ -9,7 +9,7 @@ import (
 	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/support"
-	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpResponseMessages"
+	"github.com/qaiswardag/go_backend_api_jwt/pkg/responses"
 )
 
 type Handler struct{}
@@ -61,7 +61,7 @@ func SetupRoutes() http.Handler {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
-		if err := json.NewEncoder(w).Encode(httpResponseMessages.GetErrorNotFoundMessage()); err != nil {
+		if err := json.NewEncoder(w).Encode(responses.GetErrorNotFoundMessage()); err != nil {
 			fmt.Printf("Error encoding JSON response: %v\n", err)
 		}
 	})
