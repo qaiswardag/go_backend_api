@@ -9,7 +9,7 @@ import (
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpresp"
 )
 
-func Auth(next http.Handler) http.Handler {
+func RequireSessionMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Attempt to retrieve the cookie
 		cookie, err := r.Cookie("session_token")

@@ -5,7 +5,7 @@ import (
 )
 
 func GlobalMiddleware(handler http.Handler) http.Handler {
-	handler = Auth(handler)
+	handler = RequireSessionMiddleware(handler)
 	handler = Cors(handler)
 	return handler
 }
