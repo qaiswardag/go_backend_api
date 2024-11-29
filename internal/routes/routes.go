@@ -54,7 +54,6 @@ func HandleUserSettingsRoute(w http.ResponseWriter, r *http.Request) {
 func SetupRoutes() http.Handler {
 	mux := http.NewServeMux()
 	protectedMux := http.NewServeMux()
-
 	protectedHandler := middleware.GlobalMiddleware(protectedMux)
 
 	// Main route
