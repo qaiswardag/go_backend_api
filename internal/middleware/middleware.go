@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func MiddlewareMain(handler http.Handler) http.Handler {
+func GlobalMiddleware(handler http.Handler) http.Handler {
 	handler = Auth(handler)
 	handler = Cors(handler)
 	return handler

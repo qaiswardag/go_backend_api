@@ -8,14 +8,14 @@ import (
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/support"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpresp"
 )
 
 type Handler struct{}
 
 func HandleLoginRoute(w http.ResponseWriter, r *http.Request) {
-	// sessionToken := support.GenerateToken(32)
+	// sessionToken := tokengen.GenerateRandomToken(32)
 	sessionToken := "1234"
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
@@ -25,7 +25,7 @@ func HandleLoginRoute(w http.ResponseWriter, r *http.Request) {
 	})
 	// Store the session token in the database.
 
-	csrfToken := support.GenerateToken(32)
+	csrfToken := tokengen.GenerateRandomToken(32)
 	http.SetCookie(w, &http.Cookie{
 		Name:     "csrf_token",
 		Value:    csrfToken,
@@ -55,7 +55,7 @@ func SetupRoutes() http.Handler {
 	mux := http.NewServeMux()
 	protectedMux := http.NewServeMux()
 
-	protectedHandler := middleware.MiddlewareMain(protectedMux)
+	protectedHandler := middleware.GlobalMiddleware(protectedMux)
 
 	// Main route
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
