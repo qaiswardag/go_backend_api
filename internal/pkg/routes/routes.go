@@ -21,7 +21,7 @@ func HandleLoginRoute(w http.ResponseWriter, r *http.Request) {
 		Name:     "session_token",
 		Value:    sessionToken,
 		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: false,
+		HttpOnly: true,
 	})
 	// Store the session token in the database.
 
