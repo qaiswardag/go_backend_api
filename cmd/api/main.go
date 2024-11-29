@@ -50,7 +50,6 @@ func HandleUserSettings(w http.ResponseWriter, r *http.Request) {
 }
 
 func MiddlewareMain(handler http.Handler) http.Handler {
-
 	handler = middleware.Auth(handler)
 	handler = middleware.Cors(handler)
 	return handler
