@@ -3,17 +3,22 @@ package middleware
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
 )
 
 func Cors(next http.Handler) http.Handler {
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("CORS before preflight")
+
+		allowedOrigins := config.GetCORSOrigin("CORS_ALLOW_ORIGIN")
 
 		// This is important for enabling cross-origin requests, especially from a frontend on a different domain
 		// Set the response content type to JSON with UTF-8 encoding
 		// Allows requests from the specified origin (localhost:7777) to access the resource
-		// Only requests coming from http://localhost:7777 are allowed to access the backend
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:7777")
+		// Only requests coming from allowed origins have access the backend
+		w.Header().Set("Access-Control-Allow-Origin", allowedOrigins)
 
 		// Cache the response for 60 seconds
 		// This helps reduce server load by caching the response for a short period of time

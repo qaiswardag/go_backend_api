@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/routes"
 )
 
 func main() {
-
+	// Load environment variables file
+	config.LoadEnv()
 	handler := routes.SetupRoutes()
 
 	server := http.Server{
