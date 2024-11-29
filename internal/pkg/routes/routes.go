@@ -53,7 +53,9 @@ func HandleUserSettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 func SetupRoutes() http.Handler {
 	mux := http.NewServeMux()
-	handler := middleware.MiddlewareMain(mux)
+	protectedMux := http.NewServeMux()
+
+	protectedHandler := middleware.MiddlewareMain(protectedMux)
 
 	// Main route
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +67,7 @@ func SetupRoutes() http.Handler {
 	})
 
 	mux.HandleFunc("/login", HandleLoginRoute)
-	mux.HandleFunc("/user/settings", HandleUserSettingsRoute)
+	protectedMux.HandleFunc("/user/settings", HandleUserSettingsRoute)
 
-	return handler
+	return protectedHandler
 }
