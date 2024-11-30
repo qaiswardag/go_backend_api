@@ -1,5 +1,18 @@
 package middleware
 
+/*
+   |--------------------------------------------------------------------------
+   | Cross-Origin Resource Sharing (CORS) Configuration
+   |--------------------------------------------------------------------------
+   |
+   | Here you may configure your settings for cross-origin resource sharing
+   | or "CORS". This determines what cross-origin operations may execute
+   | in web browsers.
+   |
+   | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+   |
+*/
+
 import (
 	"fmt"
 	"net/http"
@@ -8,7 +21,6 @@ import (
 )
 
 func Cors(next http.Handler) http.Handler {
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("CORS before preflight")
 
@@ -59,6 +71,7 @@ func Cors(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
+
 		fmt.Println("CORS after preflight")
 		next.ServeHTTP(w, r)
 	})

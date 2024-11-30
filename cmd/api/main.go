@@ -13,7 +13,7 @@ func main() {
 	config.LoadEnvironmentFile()
 	serverAddr := config.GetEnvironmentVariable("SERVER_ADDR")
 
-	handler := routes.SetupRoutes()
+	handler := routes.MainRouter()
 
 	server := http.Server{
 		Addr:    serverAddr,
