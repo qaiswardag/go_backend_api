@@ -20,9 +20,28 @@ import (
    |
 */
 
+type LoginRequest struct {
+	Password string `json:"password"`
+}
+
 func Create(w http.ResponseWriter, r *http.Request) {
+
+	// Read the request body
+	var req LoginRequest
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&req); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	// Ensure the body is closed after reading
+	defer r.Body.Close()
+
+	// Access the username and password
+	fmt.Printf("Received password: %s\n", req.Password)
+
 	// sessionToken := tokengen.GenerateRandomToken(32)
-	sessionToken := "1234"
+	sessionToken := req.Password
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
 		Value:    sessionToken,
