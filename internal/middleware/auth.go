@@ -38,17 +38,16 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(httpresp.GetErrorResponse())
 			fmt.Println("User authorization failed")
+			return
 		}
 
 		// Compare the session token with the stored session token in the database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
-
 			// response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			// Log the cookie name and value
 			fmt.Printf("Authorization successful for: %s. The user token has been issued: %s\n\n", cookie.Name, cookie.Value)
-			return
 		}
 
 		next.ServeHTTP(w, r)
