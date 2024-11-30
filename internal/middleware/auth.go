@@ -33,8 +33,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		}
 
 		// Compare the session token with the stored session token in the database
-		if cookie.Name != "session_token" && cookie.Value != "1234" {
-			fmt.Println("herrrr..")
+		if cookie.Name != "session_token" || cookie.Value != "1234" {
 			// response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
