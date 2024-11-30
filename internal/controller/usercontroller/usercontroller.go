@@ -21,7 +21,6 @@ import (
 */
 
 func Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Hit login route!")
 	// sessionToken := tokengen.GenerateRandomToken(32)
 	sessionToken := "1234"
 	http.SetCookie(w, &http.Cookie{
@@ -41,8 +40,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	})
 	// Store csrf_token token in database
 
-	// Response
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)

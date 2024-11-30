@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/home"
@@ -25,7 +24,6 @@ func (h *RouteHandler) LoginCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *RouteHandler) UserSettingsShow(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("kommer den heer")
 	usersettingscontroller.Show(w, r)
 }
 

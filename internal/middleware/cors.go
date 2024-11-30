@@ -67,6 +67,8 @@ func Cors(next http.Handler) http.Handler {
 		}
 
 		fmt.Println("CORS after preflight")
+		// Set JSON Content-Type for all responses
+		w.Header().Set("Content-Type", "application/json")
 		next.ServeHTTP(w, r)
 	})
 }

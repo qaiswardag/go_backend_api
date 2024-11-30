@@ -19,9 +19,6 @@ import (
 */
 
 func Show(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Hit settings route!")
-	// Response
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	fmt.Println("Hit user settings route!")
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
