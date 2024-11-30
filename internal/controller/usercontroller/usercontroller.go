@@ -29,7 +29,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: true,
 	})
-	// Store the session token in the database.
+	// Store the session_token in the database
 
 	csrfToken := tokengen.GenerateRandomToken(32)
 	http.SetCookie(w, &http.Cookie{

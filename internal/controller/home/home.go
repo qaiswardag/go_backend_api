@@ -20,7 +20,6 @@ import (
 
 func Show(w http.ResponseWriter, r *http.Request) http.Handler {
 	mux := http.NewServeMux()
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNotFound)
 	if err := json.NewEncoder(w).Encode(httpresp.GetErrorNotFoundMessage()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)

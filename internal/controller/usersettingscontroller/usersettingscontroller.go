@@ -20,7 +20,6 @@ import (
 
 func Show(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Println("Hit user settings route!")
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)
 	}

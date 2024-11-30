@@ -33,12 +33,19 @@ func MainRouter() http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handler.Home)
-	mux.Handle("/login", middleware.Cors(http.HandlerFunc(handler.LoginCreate)))
+	mux.Handle("/login", middleware.Cors(
+		middleware.GlobalMiddleware(
+			http.HandlerFunc(handler.LoginCreate),
+		),
+	),
+	)
 
 	mux.Handle("/user/settings",
 		middleware.Cors(
-			middleware.RequireSessionMiddleware(
-				http.HandlerFunc(handler.UserSettingsShow),
+			middleware.GlobalMiddleware(
+				middleware.RequireSessionMiddleware(
+					http.HandlerFunc(handler.UserSettingsShow),
+				),
 			),
 		),
 	)

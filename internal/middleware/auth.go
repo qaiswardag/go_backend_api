@@ -14,7 +14,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		cookie, err := r.Cookie("session_token")
 
 		if err != nil {
-			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(httpresp.GetErrorResponse())
 			fmt.Println("User authorization failed")
@@ -24,7 +23,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		// Check if the cookie value is empty
 		if cookie.Value == "" {
 			fmt.Printf("Cookie %s is empty: %+v\n", cookie.Name, cookie)
-			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(httpresp.GetErrorResponse())
 			fmt.Println("User authorization failed")
@@ -33,8 +31,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 
 		// Compare the session token with the stored session token in the database
 		if cookie.Name != "session_token" || cookie.Value != "1234" {
-			// response
-			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(httpresp.GetErrorResponse())
 			fmt.Println("User authorization failed")
@@ -43,13 +39,12 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 
 		// Compare the session token with the stored session token in the database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
-			// response
-			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			// Log the cookie name and value
 			fmt.Printf("Authorization successful for: %s. The user token has been issued: %s\n\n", cookie.Name, cookie.Value)
 		}
 
+		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)
 	})
 }
