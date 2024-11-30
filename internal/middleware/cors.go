@@ -60,7 +60,7 @@ func Cors(next http.Handler) http.Handler {
 
 		// Handle preflight request
 		// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
-		// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice
+		// POST requests first trigger a preflight OPTIONS request, so the handler is called only twice
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
 			return
