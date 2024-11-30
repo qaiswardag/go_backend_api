@@ -47,7 +47,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			// Log the cookie name and value
-			fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
+			fmt.Printf("Authorization successful for: %s. The user token has been issued: %s\n\n", cookie.Name, cookie.Value)
 			return
 		}
 
