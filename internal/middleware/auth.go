@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/pkg/httpresp"
 )
 
@@ -47,10 +46,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 			// response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
-				fmt.Printf("Error encoding JSON response: %v\n", err)
-			}
-
 			// Log the cookie name and value
 			fmt.Printf("Token Name: %s, Token Value: %s\n\n", cookie.Name, cookie.Value)
 			return

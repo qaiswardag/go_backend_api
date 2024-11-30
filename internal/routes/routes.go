@@ -37,6 +37,7 @@ func HandleLoginRoute(w http.ResponseWriter, r *http.Request) {
 	// Response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	fmt.Println("Hit login route!")
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)
 	}
@@ -46,6 +47,7 @@ func HandleUserSettingsRoute(w http.ResponseWriter, r *http.Request) {
 	// Response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	fmt.Println("Hit user settings route!")
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)
 	}
