@@ -1,5 +1,18 @@
 package middleware
 
+/*
+   |--------------------------------------------------------------------------
+   | Cross-Origin Resource Sharing (CORS) Configuration
+   |--------------------------------------------------------------------------
+   |
+   | Here you may configure your settings for cross-origin resource sharing
+   | or "CORS". This determines what cross-origin operations may execute
+   | in web browsers.
+   |
+   | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+   |
+*/
+
 import (
 	"fmt"
 	"net/http"
@@ -8,8 +21,8 @@ import (
 )
 
 func Cors(next http.Handler) http.Handler {
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
 		fmt.Println("CORS before preflight")
 
 		allowedOrigins := config.GetEnvironmentVariable("CORS_ALLOW_ORIGIN")
@@ -22,7 +35,11 @@ func Cors(next http.Handler) http.Handler {
 
 		// Cache the response for 60 seconds
 		// This helps reduce server load by caching the response for a short period of time
-		w.Header().Set("Cache-Control", "max-age=60")
+		// When a client (like a browser) receives this response:
+		// It will store the resource in its cache and use the cached version
+		// for the next 60 seconds without making another request to the server.
+		// After 60 seconds, the cache expires, and the client will re-fetch the resource if needed.
+		// w.Header().Set("Cache-Control", "max-age=60")
 
 		// Set to true means that the frontend is allowed to send cookies (or session tokens)
 		// If false, the frontend will not send any cookies or authorization headers when making requests to the backend
@@ -45,21 +62,13 @@ func Cors(next http.Handler) http.Handler {
 		// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
 		// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice
 		if r.Method == http.MethodOptions {
-
-			// header('Access-Control-Allow-Methods: POST, PATCH, DELETE, OPTIONS');
-			// header('Access-Control-Allow-Headers: Authorization, Content-Type');
-			// header('Access-Control-Max-age: 86400');
-			// $response = new Response();
-			// $response->setHttpStatusCode(200);
-			// $response->setSuccess(true);
-			// $response->addMessage('Preflight OPTIONS check');
-			// $response->send();
-			// exit;
-
 			w.WriteHeader(http.StatusOK)
 			return
 		}
+
 		fmt.Println("CORS after preflight")
+
+		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)
 	})
 }
