@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/home"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/homecontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/usercontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/usersettingscontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
@@ -11,12 +11,8 @@ import (
 
 type RouteHandler struct{}
 
-func (h *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	home.Show(w, r)
-}
-
 func (h *RouteHandler) Home(w http.ResponseWriter, r *http.Request) {
-	home.Show(w, r)
+	homecontroller.Show(w, r)
 }
 
 func (h *RouteHandler) LoginCreate(w http.ResponseWriter, r *http.Request) {
@@ -33,6 +29,7 @@ func MainRouter() http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handler.Home)
+
 	mux.Handle("/login", middleware.Cors(
 		middleware.GlobalMiddleware(
 			http.HandlerFunc(handler.LoginCreate),
