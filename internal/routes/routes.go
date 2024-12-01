@@ -11,37 +11,25 @@ import (
 
 type RouteHandler struct{}
 
-func (h *RouteHandler) Home(w http.ResponseWriter, r *http.Request) {
-	homecontroller.Show(w, r)
-}
-
-func (h *RouteHandler) LoginCreate(w http.ResponseWriter, r *http.Request) {
-	usercontroller.Create(w, r)
-}
-
-func (h *RouteHandler) UserSettingsShow(w http.ResponseWriter, r *http.Request) {
-	usersettingscontroller.Show(w, r)
-}
-
 func MainRouter() http.Handler {
 
-	handler := &RouteHandler{}
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handler.Home)
+	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		homecontroller.Show(w, r).ServeHTTP(w, r)
+	}))
 
 	mux.Handle("/login", middleware.Cors(
 		middleware.GlobalMiddleware(
-			http.HandlerFunc(handler.LoginCreate),
+			http.HandlerFunc(usercontroller.Create),
 		),
-	),
-	)
+	))
 
 	mux.Handle("/user/settings",
 		middleware.Cors(
 			middleware.GlobalMiddleware(
 				middleware.RequireSessionMiddleware(
-					http.HandlerFunc(handler.UserSettingsShow),
+					http.HandlerFunc(usersettingscontroller.Show),
 				),
 			),
 		),
