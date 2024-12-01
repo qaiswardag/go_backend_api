@@ -39,7 +39,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 
 		// Compare the session token with the stored session token in the database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
-			w.WriteHeader(http.StatusOK)
 			// Log the cookie name and value
 			fmt.Printf("Authorization successful for: %s. The user token has been issued: %s\n\n", cookie.Name, cookie.Value)
 		}
