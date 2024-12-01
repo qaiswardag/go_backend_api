@@ -1,4 +1,4 @@
-package usersettings
+package usersettingscontroller
 
 import (
 	"encoding/json"
