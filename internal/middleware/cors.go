@@ -40,6 +40,7 @@ func Cors(next http.Handler) http.Handler {
 		// for the next 60 seconds without making another request to the server.
 		// After 60 seconds, the cache expires, and the client will re-fetch the resource if needed.
 		// w.Header().Set("Cache-Control", "max-age=60")
+		w.Header().Set("Cache-Control", "no-cache, no-store")
 
 		// Set to true means that the frontend is allowed to send cookies (or session tokens)
 		// If false, the frontend will not send any cookies or authorization headers when making requests to the backend
