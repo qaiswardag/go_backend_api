@@ -12,6 +12,7 @@ func main() {
 	// Load environment variables file
 	config.LoadEnvironmentFile()
 
+	// serverAddr:
 	// Go Server Ports Behind a Web Serve:
 	// Do not directly expose the Go port (e.g., localhost:8080) to the public internet.
 
