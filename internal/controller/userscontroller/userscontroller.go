@@ -40,6 +40,12 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	// Access the username and password
 	fmt.Printf("Received password: %s\n", req.Password)
 
+	if req.Password != "1234" {
+		fmt.Println("kom heeer..")
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	// sessionToken := tokengen.GenerateRandomToken(32)
 	sessionToken := req.Password
 	http.SetCookie(w, &http.Cookie{
