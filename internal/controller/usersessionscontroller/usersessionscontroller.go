@@ -24,6 +24,7 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
+// Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
 
 	// Read the request body
@@ -41,7 +42,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Received password: %s\n", req.Password)
 
 	if req.Password != "1234" {
-		fmt.Println("kom heeer..")
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -69,4 +69,11 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)
 	}
+}
+
+// Handler update password
+func Update(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Update user password controller")
+	w.WriteHeader(http.StatusUnauthorized)
+	return
 }
