@@ -1,4 +1,4 @@
-package userscontroller
+package usersessionscontroller
 
 import (
 	"encoding/json"
