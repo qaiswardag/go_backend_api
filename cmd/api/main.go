@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
@@ -36,6 +36,7 @@ func main() {
 	errServer := server.ListenAndServe()
 
 	if errServer != nil {
-		fmt.Println("Server failed to start: ", errServer)
+		log.Fatalf("Server failed to start: %v", errServer)
+
 	}
 }

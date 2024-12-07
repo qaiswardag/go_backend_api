@@ -3,9 +3,11 @@ package usersessionscontroller
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
 )
@@ -38,8 +40,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	// Ensure the body is closed after reading
 	defer r.Body.Close()
 
-	// Access the username and password
-	fmt.Printf("Received password: %s\n", req.Password)
+	// Access the password
+	logger.LogToFile(fmt.Sprintf("Received password: %s\n", req.Password))
 
 	if req.Password != "1234" {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -67,13 +69,13 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
-		fmt.Printf("Error encoding JSON response: %v\n", err)
+		log.Printf("Error encoding JSON response: %v\n", err)
 	}
 }
 
 // Handler update password
 func Update(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
-		fmt.Printf("Error encoding JSON response: %v\n", err)
+		log.Printf("Error encoding JSON response: %v\n", err)
 	}
 }

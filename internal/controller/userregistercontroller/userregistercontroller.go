@@ -3,10 +3,12 @@ package userregistercontroller
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/qaiswardag/go_backend_api_jwt/database"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
 	"golang.org/x/crypto/bcrypt"
@@ -42,8 +44,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// Access the username and password
-	fmt.Printf("Received Email: %s\n", req.Email)
-	fmt.Printf("Received password: %s\n", req.Password)
+	logger.LogToFile(fmt.Sprintf("Received Email: %s\n", req.Email))
+	logger.LogToFile(fmt.Sprintf("Received password: %s\n", req.Password))
 
 	// Hash the password using bcrypt
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -51,12 +53,10 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error hashing password", http.StatusInternalServerError)
 		return
 	}
-	fmt.Printf("Hashed password: %s\n", string(hashedPassword))
+
+	logger.LogToFile(fmt.Sprintf("Hashed password: %s\n", string(hashedPassword)))
 
 	database.InitDB()
-
-	w.WriteHeader(http.StatusUnauthorized)
-	return
 
 	w.WriteHeader(http.StatusUnauthorized)
 	return
@@ -81,6 +81,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
-		fmt.Printf("Error encoding JSON response: %v\n", err)
+		log.Printf("Error encoding JSON response: %v\n", err)
 	}
 }

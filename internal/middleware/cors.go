@@ -14,16 +14,16 @@ package middleware
 */
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 )
 
 func Cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		fmt.Println("CORS before preflight")
+		logger.LogToFile("CORS before preflight")
 
 		allowedOrigins := config.GetEnvironmentVariable("CORS_ALLOW_ORIGIN")
 
@@ -67,7 +67,7 @@ func Cors(next http.Handler) http.Handler {
 			return
 		}
 
-		fmt.Println("CORS after preflight")
+		logger.LogToFile("CORS after preflight")
 
 		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)
