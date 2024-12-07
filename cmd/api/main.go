@@ -33,9 +33,9 @@ func main() {
 		Handler: handler,
 	}
 
-	err := server.ListenAndServe()
+	errServer := server.ListenAndServe()
 
-	if err != nil {
-		fmt.Println("Server failed to start: ", err)
+	if errServer != nil {
+		fmt.Println("Server failed to start: ", errServer)
 	}
 }

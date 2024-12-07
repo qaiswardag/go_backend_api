@@ -1,4 +1,4 @@
-package usersessionscontroller
+package userregistercontroller
 
 import (
 	"encoding/json"
@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/qaiswardag/go_backend_api_jwt/database"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
+	"golang.org/x/crypto/bcrypt"
 )
 
 /*
@@ -20,7 +22,8 @@ import (
    |
 */
 
-type LoginRequest struct {
+type RegisterRequest struct {
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -28,7 +31,7 @@ type LoginRequest struct {
 func Create(w http.ResponseWriter, r *http.Request) {
 
 	// Read the request body
-	var req LoginRequest
+	var req RegisterRequest
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&req); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -39,15 +42,26 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// Access the username and password
+	fmt.Printf("Received Email: %s\n", req.Email)
 	fmt.Printf("Received password: %s\n", req.Password)
 
-	if req.Password != "1234" {
-		w.WriteHeader(http.StatusUnauthorized)
+	// Hash the password using bcrypt
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, "Error hashing password", http.StatusInternalServerError)
 		return
 	}
+	fmt.Printf("Hashed password: %s\n", string(hashedPassword))
 
-	// sessionToken := tokengen.GenerateRandomToken(32)
-	sessionToken := req.Password
+	database.InitDB()
+
+	w.WriteHeader(http.StatusUnauthorized)
+	return
+
+	w.WriteHeader(http.StatusUnauthorized)
+	return
+
+	sessionToken := tokengen.GenerateRandomToken(32)
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
 		Value:    sessionToken,
@@ -66,13 +80,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	// Store csrf_token token in database
 
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
-		fmt.Printf("Error encoding JSON response: %v\n", err)
-	}
-}
-
-// Handler update password
-func Update(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
 		fmt.Printf("Error encoding JSON response: %v\n", err)
 	}

@@ -1,7 +1,20 @@
 package main
 
-import "fmt"
+import "github.com/qaiswardag/go_backend_api_jwt/database"
+
+type Job struct {
+	Code   string
+	Price  uint
+	New    uint
+	NewNew uint
+}
 
 func main() {
-	fmt.Println("Seed file ran")
+
+	db, err := database.InitDB()
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.AutoMigrate(&Job{})
 }
