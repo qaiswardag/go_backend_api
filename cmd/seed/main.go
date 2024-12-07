@@ -32,7 +32,11 @@ func main() {
 	}
 	// Create 20 fake jobs
 	for i := 1; i <= 20; i++ {
-		job := model.Job{Title: fmt.Sprintf("job%d", i)}
+		job := model.Job{
+			Title: fmt.Sprintf("job%d", i),
+			Description: fmt.Sprintln("Consectetuer adipiscing elit. Ac per bibendum quis nec tristique porttitor. Maecenas eros maximus augue, nostra facilisi metus magna. Consequat condimentum mollis luctus molestie turpis et tortor vivamus. Elementum himenaeos potenti tempus nascetur ultrices per. Lacinia tortor eget mus felis magnis luctus. Tellus dis donec erat condimentum per nostra nibh dignissim. Purus sapien finibus mauris vivamus etiam pretium. Hac curae porttitor elementum eget lobortis lobortis. \n\nElementum non sagittis feugiat condimentum dui bibendum ultricies torquent. Sem platea bibendum blandit viverra id urna pellentesque. Phasellus tristique in sodales leo fermentum; cursus dictum. Aptent parturient mus eleifend orci ac. Amet lectus vehicula lacus ac velit. Tortor ex ipsum; fusce hac gravida sagittis porttitor. Ac mollis risus suscipit sodales libero metus magnis.",
+				i),
+		}
 		db.Create(&job)
 	}
 }
