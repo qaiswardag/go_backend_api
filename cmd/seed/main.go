@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Users struct {
+type User struct {
 	gorm.Model
 	UserName string `gorm:"unique"`
 }
@@ -23,19 +23,19 @@ func main() {
 		panic("failed to connect database")
 	}
 	// Drop all tables
-	db.Exec("DROP TABLE IF EXISTS jobs, products")
+	db.Exec("DROP TABLE IF EXISTS users, jobs")
 
 	// AutoMigrate will create the Job and Product tables
-	db.AutoMigrate(&Users{}, &Job{})
+	db.AutoMigrate(&User{}, &Job{})
 
 	// Create 10 fake users
 	for i := 1; i <= 10; i++ {
-		user := Users{UserName: fmt.Sprintf("user%d", i)}
+		user := User{UserName: fmt.Sprintf("user%d", i)}
 		db.Create(&user)
 	}
 
 	// Create 20 fake jobs
-	for i := 1; i <= 100; i++ {
+	for i := 1; i <= 20; i++ {
 		job := Job{Title: fmt.Sprintf("job%d", i)}
 		db.Create(&job)
 	}
