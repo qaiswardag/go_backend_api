@@ -11,6 +11,8 @@ import (
 )
 
 func RequireSessionMiddleware(next http.Handler) http.Handler {
+	fileLogger := logger.FileLogger{}
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Attempt to retrieve the cookie
 		cookie, err := r.Cookie("session_token")
@@ -25,7 +27,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		// Check if the cookie value is empty
 		if cookie.Value == "" {
 			log.Printf("Cookie %s is empty: %+v\n", cookie.Name, cookie)
-			logger.LogToFile("AUTH", fmt.Sprintf("Authorization successful: %s: %s", cookie.Name, cookie.Value))
+			fileLogger.LogToFile("AUTH", fmt.Sprintf("Authorization successful: %s: %s", cookie.Name, cookie.Value))
 
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(httpresp.GetErrorResponse())
@@ -43,7 +45,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 
 		// Compare the session token with the stored session token in the database
 		if cookie.Name == "session_token" && cookie.Value == "1234" {
-			logger.LogToFile("AUTH", fmt.Sprintf("Authorization successful: %s: %s", cookie.Name, cookie.Value))
+			fileLogger.LogToFile("AUTH", fmt.Sprintf("Authorization successful: %s: %s", cookie.Name, cookie.Value))
 		}
 
 		// Pass control to the next middleware or handler

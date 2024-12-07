@@ -2,7 +2,6 @@ package userregistercontroller
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,7 +13,6 @@ import (
 	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/utils"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 /*
@@ -28,13 +26,16 @@ import (
 */
 
 type RegisterRequest struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username  string `json:"username"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
 }
 
 // Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
+	fileLogger := logger.FileLogger{}
 
 	serverIP, err := utils.GetServerIP()
 
@@ -53,6 +54,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	sessionToken := tokengen.GenerateRandomToken(32)
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
 		Value:    sessionToken,
@@ -62,23 +64,13 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	// Store the session_token in the database
 
 	csrfToken := tokengen.GenerateRandomToken(32)
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "csrf_token",
 		Value:    csrfToken,
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: false,
 	})
-
-	//
-	//
-	//
-	//
-	//
-	//
-	// Access the username and password
-	logger.LogToFile("INPUT", fmt.Sprintf("Received username: %s", req.Username))
-	logger.LogToFile("INPUT", fmt.Sprintf("Received email: %s", req.Email))
-	logger.LogToFile("INPUT", fmt.Sprintf("Received password: %s", req.Password))
 
 	// Hash the password using bcrypt
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -87,47 +79,31 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logger.LogToFile("PASSWORD", fmt.Sprintf("Hashed password: %s", string(hashedPassword)))
+	fileLogger.LogToFile("PASSWORD", fmt.Sprintf("Hashed password: %s", string(hashedPassword)))
 
 	db, err := database.InitDB()
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	// Check if the username already exists
-	var existingUser model.User
-	if err := db.Where("user_name = ?", req.Username).First(&existingUser).Error; err == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Username already taken"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Username already taken. Received username: %s", req.Username))
-		return
-	} else if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Failed to query user. Error: %s", err.Error()))
+	// Check if the record already exists
+	userByUsername := model.User{}
+	if utils.CheckIfRecordExists(db, &userByUsername, "user_name", req.Username, w, fileLogger) {
 		return
 	}
 
-	// Check if the email already exists
-	var existingEmailUser model.User
-	if err := db.Where("email = ?", req.Email).First(&existingEmailUser).Error; err == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Email already taken"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Email already taken. Received email: %s", req.Email))
-		return
-	} else if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Failed to query email. Error: %s", err.Error()))
+	// Check if the record already exists
+	userByEmail := model.User{}
+	if utils.CheckIfRecordExists(db, &userByEmail, "email", req.Email, w, fileLogger) {
 		return
 	}
 
 	// Create a User object
-	user := &model.User{
+	newUser := model.User{
 		UserName:  req.Username,
 		Email:     req.Email,
-		FirstName: "john",
-		LastName:  "doe",
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
 		Password:  string(hashedPassword),
 	}
 
@@ -136,22 +112,22 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if tx.Error != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Failed to start transaction. Error: %s", tx.Error.Error()))
+		fileLogger.LogToFile("DB", fmt.Sprintf("Failed to start transaction. Error: %s", tx.Error.Error()))
 		return
 	}
 
 	// Save the user to the database
-	if err := tx.Create(&user).Error; err != nil {
+	if err := tx.Create(&newUser).Error; err != nil {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Failed to save user to database. Error: %s", err.Error()))
+		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to save user to database. Error: %s", err.Error()))
 		return
 	}
 
 	// Create a Session object
 	session := &model.Session{
-		UserID:      int(user.ID),
+		UserID:      int(newUser.ID),
 		AccessToken: sessionToken,
 		ServerIP:    serverIP,
 		// Set expiry to 7 days
@@ -163,7 +139,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Failed to save session to database. Error: %s", err.Error()))
+		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to save session to database. Error: %s", err.Error()))
 		return
 	}
 
@@ -172,7 +148,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
-		logger.LogToFile("AUTH", fmt.Sprintf("Failed to commit transaction. Error: %s", err.Error()))
+		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to commit transaction. Error: %s", err.Error()))
 		return
 	}
 

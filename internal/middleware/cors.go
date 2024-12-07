@@ -21,6 +21,7 @@ import (
 )
 
 func Cors(next http.Handler) http.Handler {
+	fileLogger := logger.FileLogger{}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		allowedOrigins := config.GetEnvironmentVariable("CORS_ALLOW_ORIGIN")
@@ -61,12 +62,12 @@ func Cors(next http.Handler) http.Handler {
 		// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
 		// POST requests first trigger a preflight OPTIONS request, so the handler is called only twice
 
-		logger.LogToFile("CORS", "Handle CORS Preflight Request before processing the request")
+		fileLogger.LogToFile("CORS", "Handle CORS Preflight Request before processing the request")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-		logger.LogToFile("CORS", "Finished handling CORS Preflight Request")
+		fileLogger.LogToFile("CORS", "Finished handling CORS Preflight Request")
 
 		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)

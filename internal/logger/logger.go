@@ -7,8 +7,11 @@ import (
 	"time"
 )
 
+// FileLogger implements the Logger interface
+type FileLogger struct{}
+
 // LogToFile logs a message to the specified log file
-func LogToFile(title string, message string) {
+func (f FileLogger) LogToFile(title string, message string) {
 
 	// Check if the directory exists
 	storageDir := "storage"
