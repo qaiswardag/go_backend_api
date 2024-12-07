@@ -107,6 +107,21 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		logger.LogToFile("AUTH", fmt.Sprintf("Failed to query user. Error: %s", err.Error()))
 		return
 	}
+
+	// Check if the email already exists
+	var existingEmailUser model.User
+	if err := db.Where("email = ?", req.Email).First(&existingEmailUser).Error; err == nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Email already taken"})
+		logger.LogToFile("AUTH", fmt.Sprintf("Email already taken. Received email: %s", req.Email))
+		return
+	} else if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
+		logger.LogToFile("AUTH", fmt.Sprintf("Failed to query email. Error: %s", err.Error()))
+		return
+	}
+
 	// Create a User object
 	user := &model.User{
 		UserName:  req.Username,
