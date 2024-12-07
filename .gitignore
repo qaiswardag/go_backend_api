@@ -9,7 +9,7 @@ go_chi
 build-errors.log
 main
 /storage
-/storage/*.key
+/storage/*.log
 
 
 # Logs
