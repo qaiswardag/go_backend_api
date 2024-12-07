@@ -27,9 +27,10 @@ func main() {
 	for i := 1; i <= 10; i++ {
 		user := model.User{
 			UserName:  fmt.Sprintf("user%d", i),
+			Email:     fmt.Sprintf("user%d@example.com", i),
+			Password:  fmt.Sprintf("123%d", i),
 			FirstName: fmt.Sprintf("FirstName%d", i),
 			LastName:  fmt.Sprintf("LastName%d", i),
-			Email:     fmt.Sprintf("user%d@example.com", i),
 		}
 		db.Create(&user)
 	}

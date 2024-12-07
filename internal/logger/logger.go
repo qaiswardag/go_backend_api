@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -36,5 +37,10 @@ func LogToFile(title string, message string) {
 	// Create a file logger and set the output to the file
 	fileLogger := log.New(file, "", log.LstdFlags)
 
-	fileLogger.Println(currentTime + " " + title + ": " + message + "\n")
+	// Format the log entry
+	logEntry := fmt.Sprintf("%-20s %s", title+":", message)
+
+	// Log the formatted entry
+	fileLogger.Println(logEntry)
+
 }

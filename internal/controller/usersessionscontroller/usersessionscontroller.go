@@ -41,7 +41,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// Access the password
-	logger.LogToFile("INPUT", fmt.Sprintf("Received password: %s\n", req.Password))
+	logger.LogToFile("INPUT", fmt.Sprintf("Received password: %s", req.Password))
 
 	if req.Password != "1234" {
 		w.WriteHeader(http.StatusUnauthorized)
