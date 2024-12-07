@@ -44,8 +44,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// Access the username and password
-	logger.LogToFile(fmt.Sprintf("Received Email: %s\n", req.Email))
-	logger.LogToFile(fmt.Sprintf("Received password: %s\n", req.Password))
+	logger.LogToFile("INPUT", fmt.Sprintf("Received Email: %s\n", req.Email))
+	logger.LogToFile("INPUT", fmt.Sprintf("Received password: %s\n", req.Password))
 
 	// Hash the password using bcrypt
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -54,7 +54,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logger.LogToFile(fmt.Sprintf("Hashed password: %s\n", string(hashedPassword)))
+	logger.LogToFile("PASSWORD", fmt.Sprintf("Hashed password: %s\n", string(hashedPassword)))
 
 	database.InitDB()
 

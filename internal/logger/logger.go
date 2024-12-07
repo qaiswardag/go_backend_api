@@ -7,7 +7,19 @@ import (
 )
 
 // LogToFile logs a message to the specified log file
-func LogToFile(message string) {
+func LogToFile(title string, message string) {
+
+	// Check if the directory exists
+	storageDir := "storage"
+
+	if _, err := os.Stat(storageDir); os.IsNotExist(err) {
+		// Create the "storage" directory
+		err := os.Mkdir(storageDir, 0755)
+		if err != nil {
+			log.Fatalf("Failed to create storage directory: %v", err)
+		}
+	}
+
 	// Get the current date and time
 	currentTime := time.Now().Format("2006-01-02_15-04-05")
 
@@ -21,7 +33,8 @@ func LogToFile(message string) {
 	}
 	defer file.Close()
 
-	// Create a logger and set the output to the file
-	logger := log.New(file, "", log.LstdFlags)
-	logger.Println(currentTime + " " + message)
+	// Create a file logger and set the output to the file
+	fileLogger := log.New(file, "", log.LstdFlags)
+
+	fileLogger.Println(currentTime + " " + title + ": " + message + "\n")
 }
