@@ -1,12 +1,17 @@
 package main
 
-import "github.com/qaiswardag/go_backend_api_jwt/database"
+import (
+	"github.com/qaiswardag/go_backend_api_jwt/database"
+	"gorm.io/gorm"
+)
 
+type Users struct {
+	gorm.Model
+	UserName string `gorm:"unique"`
+}
 type Job struct {
-	Code   string
-	Price  uint
-	New    uint
-	NewNew uint
+	gorm.Model
+	Title string `gorm:"not null"`
 }
 
 func main() {
@@ -15,6 +20,9 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
+	// Drop all tables
+	db.Exec("DROP TABLE IF EXISTS jobs, products")
 
-	db.AutoMigrate(&Job{})
+	// AutoMigrate will create the Job and Product tables
+	db.AutoMigrate(&Users{}, &Job{})
 }
