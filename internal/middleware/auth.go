@@ -14,7 +14,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 	fileLogger := logger.FileLogger{}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
 		// Attempt to retrieve the cookie
 		cookie, err := r.Cookie("session_token")
 
@@ -68,13 +67,6 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		ctx := context.WithValue(r.Context(), "sessionUserKey", sessionUser)
 		ctx = context.WithValue(ctx, "userKey", user)
 		r = r.WithContext(ctx)
-
-		w.WriteHeader(http.StatusOK)
-		if err := json.NewEncoder(w).Encode(map[string]string{"message": "Successfully been authenticated."}); err != nil {
-			fileLogger.LogToFile("AUTH", "Error encoding JSON response")
-			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error"})
-		}
 
 		fileLogger.LogToFile("AUTH", "Middleware auth. Successfully been authenticated.")
 

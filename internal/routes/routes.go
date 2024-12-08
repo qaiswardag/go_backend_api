@@ -21,6 +21,7 @@ func ChainMiddlewares(handler http.Handler, middlewares ...func(http.Handler) ht
 
 func MainRouter() http.Handler {
 
+	// TODO: Add methods for each route: "GET", "POST", "PUT" etc.
 	mux := http.NewServeMux()
 
 	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
