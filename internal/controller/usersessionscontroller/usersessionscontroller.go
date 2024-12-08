@@ -106,15 +106,15 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	response := map[string]interface{}{
+		"message": "Successfully logged in.",
+		"user":    user,
+	}
+
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Successfully logged in."})
-	fileLogger.LogToFile("AUTH", "Successfully logged in.")
-
-}
-
-// Handler update password
-func Update(w http.ResponseWriter, r *http.Request) {
-	if err := json.NewEncoder(w).Encode(model.UserObject()); err != nil {
-		log.Printf("Error encoding JSON response: %v\n", err)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		fileLogger.LogToFile("AUTH", "Error encoding JSON response")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error."})
 	}
 }

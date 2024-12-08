@@ -86,7 +86,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error"})
 		return
 	}
 
@@ -103,7 +103,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	tx := db.Begin()
 	if tx.Error != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error."})
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error."})
 		fileLogger.LogToFile("DB", fmt.Sprintf("Failed to start transaction. Error: %s", tx.Error.Error()))
 		return
 	}
@@ -112,7 +112,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if err := tx.Create(&newUser).Error; err != nil {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error."})
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error."})
 		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to save user to database. Error: %s", err.Error()))
 		return
 	}
@@ -129,7 +129,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if err := tx.Create(session).Error; err != nil {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error"})
 		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to save session to database. Error: %s", err.Error()))
 		return
 	}
@@ -138,12 +138,20 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if err := tx.Commit().Error; err != nil {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error"})
 		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to commit transaction. Error: %s", err.Error()))
 		return
 	}
 
-	// Respond with success
+	response := map[string]interface{}{
+		"message": "Registered successfully.",
+		"user":    newUser,
+	}
+
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Registered successfully"})
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		fileLogger.LogToFile("AUTH", "Error encoding JSON response")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error."})
+	}
 }

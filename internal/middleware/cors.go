@@ -56,8 +56,6 @@ func Cors(next http.Handler) http.Handler {
 		// The frontend can send an Authorization token in the header without being blocked by the CORS policy
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept-Version")
 
-		// Log the request method and URL path
-
 		// Handle preflight request
 		// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
 		// POST requests first trigger a preflight OPTIONS request, so the handler is called only twice
@@ -65,9 +63,11 @@ func Cors(next http.Handler) http.Handler {
 		fileLogger.LogToFile("CORS", "Handle CORS Preflight Request before processing the request.")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{"message": "Preflight request handled"}`))
 			return
 		}
-		fileLogger.LogToFile("CORS", "Finished handling CORS Preflight Request.")
+
+		fileLogger.LogToFile("CORS", "Finished handling CORS Preflight Request")
 
 		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)

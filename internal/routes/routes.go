@@ -12,11 +12,19 @@ import (
 
 type RouteHandler struct{}
 
+func ChainMiddlewares(handler http.Handler, middlewares ...func(http.Handler) http.Handler) http.Handler {
+	for _, middleware := range middlewares {
+		handler = middleware(handler)
+	}
+	return handler
+}
+
 func MainRouter() http.Handler {
 
 	mux := http.NewServeMux()
 
 	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
 		home.Show(w, r)
 	}))
 
@@ -35,21 +43,18 @@ func MainRouter() http.Handler {
 		middleware.Cors(
 			middleware.GlobalMiddleware(
 				middleware.RequireSessionMiddleware(
-					http.HandlerFunc(usersessionscontroller.Update),
+					http.HandlerFunc(authcontroller.Update),
 				),
 			),
 		),
 	)
 
-	mux.Handle("/user/user",
-		middleware.Cors(
-			middleware.GlobalMiddleware(
-				middleware.RequireSessionMiddleware(
-					http.HandlerFunc(authcontroller.Show),
-				),
-			),
-		),
-	)
+	mux.Handle("/user/user", ChainMiddlewares(
+		http.HandlerFunc(authcontroller.Show),
+		middleware.RequireSessionMiddleware,
+		middleware.GlobalMiddleware,
+		middleware.Cors,
+	))
 
 	return mux
 }
