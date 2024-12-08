@@ -4,8 +4,15 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/qaiswardag/go_backend_api_jwt/database"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/utils"
+	"golang.org/x/crypto/bcrypt"
 )
 
 /*
@@ -25,58 +32,78 @@ type LoginRequest struct {
 
 // Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
-	// utils.RemoveCookie(w, "session_token", true)
-	// utils.RemoveCookie(w, "csrf_token", false)
+	utils.RemoveCookie(w, "session_token", true)
+	utils.RemoveCookie(w, "csrf_token", false)
 
-	// fileLogger := logger.FileLogger{}
+	fileLogger := logger.FileLogger{}
 
-	// serverIP, errServerIP := utils.GetServerIP()
+	serverIP, errServerIP := utils.GetServerIP()
 
-	// if errServerIP != nil {
-	// 	log.Println("Failed to get serer ip.")
-	// }
+	if errServerIP != nil {
+		log.Println("Failed to get serer ip.")
+	}
 
-	// // Read the request body
-	// var req LoginRequest
-	// decoder := json.NewDecoder(r.Body)
-	// if err := decoder.Decode(&req); err != nil {
-	// 	http.Error(w, "Invalid request body", http.StatusBadRequest)
-	// 	return
-	// }
+	// Read the request body
+	var req LoginRequest
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&req); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Invalid request body"})
+		return
+	}
 
-	// // Ensure the body is closed after reading
-	// defer r.Body.Close()
+	// Ensure the body is closed after reading
+	defer r.Body.Close()
 
-	// db, err := database.InitDB()
-	// if err != nil {
-	// 	panic("failed to connect database")
-	// }
+	db, err := database.InitDB()
+	if err != nil {
+		panic("failed to connect database")
+	}
 
-	// sessionToken := tokengen.GenerateRandomToken(32)
-	// utils.SetCookie(w, "session_token", sessionToken, true)
-	// // Store the session_token in the database
+	// Retrieve the user from the database
+	var sessionUser model.User
+	if err := db.Where("email = ?", req.Email).First(&sessionUser).Error; err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"message": "User not found."})
+		return
+	}
 
-	// csrfToken := tokengen.GenerateRandomToken(32)
-	// utils.SetCookie(w, "csrf_token", csrfToken, false)
+	// Compare the hashed password from the user input with the hashed password stored in the database
+	if err := bcrypt.CompareHashAndPassword([]byte(sessionUser.Password), []byte(req.Password)); err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Password is incorrect."})
+		return
+	}
 
-	// // Hash the password using bcrypt
-	// hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	// if err != nil {
-	// 	http.Error(w, "Error hashing password", http.StatusInternalServerError)
-	// 	return
-	// }
+	sessionToken := tokengen.GenerateRandomToken(32)
+	utils.SetCookie(w, "session_token", sessionToken, true)
+	// Store the session_token in the database
 
-	// // Compare the hashed password from the user input with the hashed password stored in the database
+	csrfToken := tokengen.GenerateRandomToken(32)
+	utils.SetCookie(w, "csrf_token", csrfToken, false)
 
-	// // Create a Session object
-	// session := &model.Session{
-	// 	UserID:            int(sessionUser.ID),
-	// 	AccessToken:       sessionToken,
-	// 	ServerIP:          serverIP,
-	// 	AccessTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
-	// }
+	// Create a Session object
+	session := &model.Session{
+		UserID:            int(sessionUser.ID),
+		AccessToken:       sessionToken,
+		ServerIP:          serverIP,
+		AccessTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
+	}
 
-	// fileLogger.LogToFile("AUTH", fmt.Sprintf("AUTH", "Auth: Successfully logged in"))
+	// Save the session to the database
+	if err := db.Create(&session).Error; err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Failed to create the session record in the database."})
+
+		utils.RemoveCookie(w, "session_token", true)
+		utils.RemoveCookie(w, "csrf_token", false)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Successfully logged in."})
+
+	fileLogger.LogToFile("AUTH", "Successfully logged in.")
 
 }
 

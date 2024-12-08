@@ -51,7 +51,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	var req RegisterRequest
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Invalid request body"})
 		return
 	}
 
@@ -85,7 +86,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	// Hash the password using bcrypt
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		http.Error(w, "Error hashing password", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
 		return
 	}
 
@@ -102,7 +104,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	tx := db.Begin()
 	if tx.Error != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error."})
 		fileLogger.LogToFile("DB", fmt.Sprintf("Failed to start transaction. Error: %s", tx.Error.Error()))
 		return
 	}
@@ -111,7 +113,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if err := tx.Create(&newUser).Error; err != nil {
 		tx.Rollback()
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "internal server error."})
 		fileLogger.LogToFile("AUTH", fmt.Sprintf("Failed to save user to database. Error: %s", err.Error()))
 		return
 	}
