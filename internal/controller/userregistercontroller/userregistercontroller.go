@@ -35,6 +35,10 @@ type RegisterRequest struct {
 
 // Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
+
+	utils.RemoveCookie(w, "session_token", true)
+	utils.RemoveCookie(w, "csrf_token", false)
+
 	fileLogger := logger.FileLogger{}
 
 	serverIP, err := utils.GetServerIP()
@@ -53,34 +57,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	// Ensure the body is closed after reading
 	defer r.Body.Close()
 
-	sessionToken := tokengen.GenerateRandomToken(32)
-
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    sessionToken,
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: true,
-	})
-	// Store the session_token in the database
-
-	csrfToken := tokengen.GenerateRandomToken(32)
-
-	http.SetCookie(w, &http.Cookie{
-		Name:     "csrf_token",
-		Value:    csrfToken,
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: false,
-	})
-
-	// Hash the password using bcrypt
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
-		http.Error(w, "Error hashing password", http.StatusInternalServerError)
-		return
-	}
-
-	fileLogger.LogToFile("PASSWORD", fmt.Sprintf("Hashed password: %s", string(hashedPassword)))
-
 	db, err := database.InitDB()
 	if err != nil {
 		panic("failed to connect database")
@@ -97,6 +73,22 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	if utils.CheckIfRecordExists(db, &userByEmail, "email", req.Email, w, fileLogger) {
 		return
 	}
+
+	sessionToken := tokengen.GenerateRandomToken(32)
+	utils.SetCookie(w, "session_token", sessionToken, true)
+	// Store the session_token in the database
+
+	csrfToken := tokengen.GenerateRandomToken(32)
+	utils.SetCookie(w, "csrf_token", csrfToken, false)
+
+	// Hash the password using bcrypt
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, "Error hashing password", http.StatusInternalServerError)
+		return
+	}
+
+	fileLogger.LogToFile("PASSWORD", fmt.Sprintf("Hashed password: %s", string(hashedPassword)))
 
 	// Create a User object
 	newUser := model.User{
