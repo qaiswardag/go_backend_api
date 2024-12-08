@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/qaiswardag/go_backend_api_jwt/database"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
@@ -35,17 +36,17 @@ type RegisterRequest struct {
 
 // Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
-
 	utils.RemoveCookie(w, "session_token", true)
 	utils.RemoveCookie(w, "csrf_token", false)
 
 	fileLogger := logger.FileLogger{}
 
-	serverIP, err := utils.GetServerIP()
+	serverIP, errServerIP := utils.GetServerIP()
 
-	if err != nil {
+	if errServerIP != nil {
 		log.Println("Failed to get serer ip.")
 	}
+
 	// Read the request body
 	var req RegisterRequest
 	decoder := json.NewDecoder(r.Body)
@@ -88,8 +89,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fileLogger.LogToFile("PASSWORD", fmt.Sprintf("Hashed password: %s", string(hashedPassword)))
-
 	// Create a User object
 	newUser := model.User{
 		UserName:  req.Username,
@@ -119,11 +118,10 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	// Create a Session object
 	session := &model.Session{
-		UserID:      int(newUser.ID),
-		AccessToken: sessionToken,
-		ServerIP:    serverIP,
-		// Set expiry to 7 days
-		AccessTokenExpiry: time.Now().Add(7 * 24 * time.Hour),
+		UserID:            int(newUser.ID),
+		AccessToken:       sessionToken,
+		ServerIP:          serverIP,
+		AccessTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
 	}
 
 	// Save the session to the database
