@@ -29,17 +29,26 @@ func MainRouter() http.Handler {
 		home.Show(w, r)
 	}))
 
-	mux.Handle("/login", middleware.Cors(
+	mux.Handle("/user/sign-in", middleware.Cors(
 		middleware.GlobalMiddleware(
 			http.HandlerFunc(usersessionscontroller.Create),
 		),
 	))
-	mux.Handle("/register", middleware.Cors(
+	mux.Handle("/user/sign-up", middleware.Cors(
 		middleware.GlobalMiddleware(
 			http.HandlerFunc(userregistercontroller.Create),
 		),
 	))
 
+	mux.Handle("/user/sign-out",
+		middleware.Cors(
+			middleware.GlobalMiddleware(
+				middleware.RequireSessionMiddleware(
+					http.HandlerFunc(authcontroller.Destroy),
+				),
+			),
+		),
+	)
 	mux.Handle("/user/reset-password",
 		middleware.Cors(
 			middleware.GlobalMiddleware(
