@@ -2,10 +2,14 @@ package usersessionscontroller
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/qaiswardag/go_backend_api_jwt/database"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/security/tokengen"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/utils"
@@ -32,13 +36,13 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	utils.RemoveCookie(w, "session_token", true)
 	utils.RemoveCookie(w, "csrf_token", false)
 
-	// fileLogger := logger.FileLogger{}
+	fileLogger := logger.FileLogger{}
 
-	// serverIP, errServerIP := utils.GetServerIP()
+	serverIP, errServerIP := utils.GetServerIP()
 
-	// if errServerIP != nil {
-	// 	log.Println("Failed to get serer ip.")
-	// }
+	if errServerIP != nil {
+		log.Println("Failed to get serer ip.")
+	}
 
 	// Read the request body
 	var req LoginRequest
@@ -56,15 +60,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		panic("failed to connect database")
 	}
 
-	// Create a User object
-	sessionUser := model.User{
-		UserName:  req.Username,
-		Email:     req.Email,
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Password:  string(hashedPassword),
-	}
-
 	sessionToken := tokengen.GenerateRandomToken(32)
 	utils.SetCookie(w, "session_token", sessionToken, true)
 	// Store the session_token in the database
@@ -78,6 +73,18 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error hashing password", http.StatusInternalServerError)
 		return
 	}
+
+	// Compare the hashed password from the user input with the hashed password stored in the database
+
+	// Create a Session object
+	session := &model.Session{
+		UserID:            int(sessionUser.ID),
+		AccessToken:       sessionToken,
+		ServerIP:          serverIP,
+		AccessTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
+	}
+
+	fileLogger.LogToFile("AUTH", fmt.Sprintf("AUTH", "Auth: Successfully logged in"))
 
 }
 
