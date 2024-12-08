@@ -14,16 +14,15 @@ package middleware
 */
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 )
 
 func Cors(next http.Handler) http.Handler {
+	fileLogger := logger.FileLogger{}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		fmt.Println("CORS before preflight")
 
 		allowedOrigins := config.GetEnvironmentVariable("CORS_ALLOW_ORIGIN")
 
@@ -39,7 +38,8 @@ func Cors(next http.Handler) http.Handler {
 		// It will store the resource in its cache and use the cached version
 		// for the next 60 seconds without making another request to the server.
 		// After 60 seconds, the cache expires, and the client will re-fetch the resource if needed.
-		// w.Header().Set("Cache-Control", "max-age=60")
+		// or "max-age=60" instead of "no-cache, no-store"
+		w.Header().Set("Cache-Control", "no-cache, no-store")
 
 		// Set to true means that the frontend is allowed to send cookies (or session tokens)
 		// If false, the frontend will not send any cookies or authorization headers when making requests to the backend
@@ -60,13 +60,14 @@ func Cors(next http.Handler) http.Handler {
 
 		// Handle preflight request
 		// GET requests don't trigger a preflight OPTIONS request, so the handler is called only once
-		// Post requests first trigger a preflight OPTIONS request, so the handler is called only twice
+		// POST requests first trigger a preflight OPTIONS request, so the handler is called only twice
+
+		fileLogger.LogToFile("CORS", "Handle CORS Preflight Request before processing the request")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-
-		fmt.Println("CORS after preflight")
+		fileLogger.LogToFile("CORS", "Finished handling CORS Preflight Request")
 
 		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)

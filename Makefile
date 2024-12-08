@@ -17,12 +17,15 @@ down:
 	@echo "Down..."
 	@go run cmd/migration/main.go down
 
-migration:
 
 drop:
 	@echo "Drop..."
 	@go run cmd/drop/main.go
 
+migrate:
+	@echo "Seeding database..."
+	@go run cmd/migrate/main.go
+	
 seed:
 	@echo "Seeding database..."
 	@go run cmd/seed/main.go

@@ -8,6 +8,8 @@ go_chi
 # go
 build-errors.log
 main
+/storage
+/storage/*.log
 
 
 # Logs
