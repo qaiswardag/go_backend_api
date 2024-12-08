@@ -78,7 +78,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	sessionToken := tokengen.GenerateRandomToken(32)
 	utils.SetCookie(w, "session_token", sessionToken, true)
-	// Store the session_token in the database
 
 	csrfToken := tokengen.GenerateRandomToken(32)
 	utils.SetCookie(w, "csrf_token", csrfToken, false)
@@ -146,5 +145,5 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	// Respond with success
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "user registered successfully"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Registered successfully"})
 }

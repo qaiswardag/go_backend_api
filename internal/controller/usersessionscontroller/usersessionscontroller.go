@@ -61,15 +61,15 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Retrieve the user from the database
-	var sessionUser model.User
-	if err := db.Where("email = ?", req.Email).First(&sessionUser).Error; err != nil {
+	var user model.User
+	if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]string{"message": "User not found."})
 		return
 	}
 
 	// Compare the hashed password from the user input with the hashed password stored in the database
-	if err := bcrypt.CompareHashAndPassword([]byte(sessionUser.Password), []byte(req.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Password is incorrect."})
 		return
@@ -84,10 +84,16 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	// Create a Session object
 	session := &model.Session{
-		UserID:            int(sessionUser.ID),
+		UserID:            int(user.ID),
 		AccessToken:       sessionToken,
 		ServerIP:          serverIP,
 		AccessTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
+	}
+
+	// Delete all other sessions that match the UserID and ServerIP
+	if err := db.Exec("DELETE FROM sessions WHERE user_id = ? AND server_ip = ?", session.UserID, session.ServerIP).Error; err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fileLogger.LogToFile("AUTH", "Failed to delete all other sessions that match the UserID and ServerIP: "+err.Error())
 	}
 
 	// Save the session to the database
@@ -102,7 +108,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Successfully logged in."})
-
 	fileLogger.LogToFile("AUTH", "Successfully logged in.")
 
 }
