@@ -3,10 +3,10 @@ package routes
 import (
 	"net/http"
 
+	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/authcontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/home"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/userregistercontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/usersessionscontroller"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/usersettingscontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
 )
 
@@ -41,11 +41,11 @@ func MainRouter() http.Handler {
 		),
 	)
 
-	mux.Handle("/user/settings",
+	mux.Handle("/user/user",
 		middleware.Cors(
 			middleware.GlobalMiddleware(
 				middleware.RequireSessionMiddleware(
-					http.HandlerFunc(usersettingscontroller.Show),
+					http.HandlerFunc(authcontroller.Show),
 				),
 			),
 		),
