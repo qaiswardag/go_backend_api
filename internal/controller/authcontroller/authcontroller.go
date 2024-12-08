@@ -17,14 +17,6 @@ import (
    |
 */
 
-func Update(w http.ResponseWriter, r *http.Request) {
-	fileLogger := logger.FileLogger{}
-
-	w.WriteHeader(http.StatusUnauthorized)
-	json.NewEncoder(w).Encode(map[string]string{"message": "KØØØMMMER DEN HER."})
-	fileLogger.LogToFile("AUTH", "KØØØMMMER DEN HER.")
-}
-
 func Show(w http.ResponseWriter, r *http.Request) {
 	fileLogger := logger.FileLogger{}
 
@@ -97,4 +89,12 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	// w.WriteHeader(http.StatusOK)
 	// json.NewEncoder(w).Encode(map[string]string{"message": "Successfully been authenticated."})
 	// fileLogger.LogToFile("AUTH", "Successfully been authenticated.")
+}
+
+func Update(w http.ResponseWriter, r *http.Request) {
+	fileLogger := logger.FileLogger{}
+
+	w.WriteHeader(http.StatusUnauthorized)
+	json.NewEncoder(w).Encode(map[string]string{"message": "ØØØØØJ. IKKKKKKKKE HEEEER."})
+	fileLogger.LogToFile("AUTH", "ØØØØØJ. IKKKKKKKKE HEEEER.")
 }
