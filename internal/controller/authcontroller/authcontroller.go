@@ -104,4 +104,7 @@ func Destroy(w http.ResponseWriter, r *http.Request) {
 		fileLogger.LogToFile("AUTH", "Failed to delete all other sessions that match the UserID and ServerIP: "+err.Error())
 	}
 
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error."})
+
 }
