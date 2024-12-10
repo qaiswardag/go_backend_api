@@ -6,7 +6,7 @@ type User struct {
 	gorm.Model
 	UserName      string `gorm:"unique"`
 	Email         string `gorm:"unique;not null"`
-	Password      string `gorm:"not null"`
+	Password      string `gorm:"not null" json:"-"`
 	FirstName     string `gorm:"not null"`
 	LastName      string `gorm:"not null"`
 	LoginAttempts *int
