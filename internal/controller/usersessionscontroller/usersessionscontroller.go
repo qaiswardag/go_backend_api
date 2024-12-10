@@ -76,7 +76,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sessionToken := tokengen.GenerateRandomToken(32)
-	utils.SetCookie(w, "session_token", sessionToken, true)
+	utils.SetCookie(w, "session_token", sessionToken, false)
 	// Store the session_token in the database
 
 	csrfToken := tokengen.GenerateRandomToken(32)

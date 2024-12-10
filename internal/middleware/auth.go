@@ -66,6 +66,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		// If the session token matches, authorization is successful
 		ctx := context.WithValue(r.Context(), "sessionUserKey", sessionUser)
 		ctx = context.WithValue(ctx, "userKey", user)
+
 		r = r.WithContext(ctx)
 
 		fileLogger.LogToFile("AUTH", "Middleware auth. Successfully been authenticated.")

@@ -49,15 +49,6 @@ func MainRouter() http.Handler {
 			),
 		),
 	)
-	mux.Handle("/user/reset-password",
-		middleware.Cors(
-			middleware.GlobalMiddleware(
-				middleware.RequireSessionMiddleware(
-					http.HandlerFunc(authcontroller.Update),
-				),
-			),
-		),
-	)
 
 	mux.Handle("/user/user", ChainMiddlewares(
 		http.HandlerFunc(authcontroller.Show),

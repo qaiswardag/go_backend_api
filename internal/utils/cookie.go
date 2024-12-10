@@ -14,6 +14,7 @@ func RemoveCookie(w http.ResponseWriter, name string, httpOnly bool) {
 		Value:    "",
 		Expires:  time.Now().Add(-1 * time.Hour),
 		HttpOnly: httpOnly,
+		Path:     "/",
 	})
 }
 
@@ -24,5 +25,6 @@ func SetCookie(w http.ResponseWriter, name, value string, httpOnly bool) {
 		Value:    value,
 		Expires:  time.Now().Add(appconstants.TokenExpiration),
 		HttpOnly: httpOnly,
+		Path:     "/",
 	})
 }

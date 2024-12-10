@@ -20,15 +20,14 @@ import (
    |
 */
 
+// Get the user from the context and send it as a response
 func Show(w http.ResponseWriter, r *http.Request) {
 	fileLogger := logger.FileLogger{}
 
-	sessionUser, _ := r.Context().Value("sessionUserKey").(model.Session)
 	user, _ := r.Context().Value("userKey").(model.User)
 
 	response := map[string]interface{}{
-		"sessionUser": sessionUser,
-		"user":        user,
+		"user": user,
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -39,42 +38,6 @@ func Show(w http.ResponseWriter, r *http.Request) {
 		fileLogger.LogToFile("AUTH", "Error encoding JSON response")
 		return
 	}
-
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	// Log user and sessionUser information with field names
-	// userJSON, err := json.MarshalIndent(user, "", "  ")
-	// if err != nil {
-	// 	fileLogger.LogToFile("USER", "Error marshalling user to JSON")
-	// } else {
-	// 	fileLogger.LogToFile("USER", fmt.Sprintf("User is: %s", userJSON))
-	// }
-
-	// sessionUserJSON, err := json.MarshalIndent(sessionUser, "", "  ")
-	// if err != nil {
-	// 	fileLogger.LogToFile("USER", "Error marshalling sessionUser to JSON")
-	// } else {
-	// 	fileLogger.LogToFile("USER", fmt.Sprintf("Session User is: %s", sessionUserJSON))
-	// }
-}
-
-func Update(w http.ResponseWriter, r *http.Request) {
-	fileLogger := logger.FileLogger{}
-
-	w.WriteHeader(http.StatusUnauthorized)
-	json.NewEncoder(w).Encode(map[string]string{"message": "ØØØØØJ. IKKKKKKKKE HEEEER."})
-	fileLogger.LogToFile("AUTH", "ØØØØØJ. IKKKKKKKKE HEEEER.")
 }
 
 func Destroy(w http.ResponseWriter, r *http.Request) {
@@ -93,8 +56,8 @@ func Destroy(w http.ResponseWriter, r *http.Request) {
 
 	if !okSessionUser {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Failed to retrieve session user from context"})
-		fileLogger.LogToFile("AUTH", "Failed to retrieve session user from context")
+		json.NewEncoder(w).Encode(map[string]string{"message": "Failed to retrieve session user from context."})
+		fileLogger.LogToFile("AUTH", "Failed to retrieve session user from context.")
 		return
 	}
 
