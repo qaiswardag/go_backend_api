@@ -107,7 +107,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := map[string]interface{}{
-		"message": "Successfully logged in.",
+		"message": "Successfully signed in.",
 		"user":    user,
 	}
 
