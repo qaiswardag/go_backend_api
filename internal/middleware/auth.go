@@ -6,17 +6,21 @@ import (
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/database"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
 )
 
+// RequireSessionMiddleware is a middleware that checks if the user is authenticated
 func RequireSessionMiddleware(next http.Handler) http.Handler {
 	fileLogger := logger.FileLogger{}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Attempt to retrieve the cookie
+
+		// Retrieve the session token from the cookie
 		cookie, err := r.Cookie("session_token")
 
+		// Check if the cookie is not found
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "Session Cookis is empty."})
@@ -32,40 +36,41 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
+		// Connect to the database
 		db, err := database.InitDB()
 		if err != nil {
 			panic("failed to connect database")
 		}
 
-		// Retrieve the access token from database
-		var sessionUser model.Session
-		if err := db.Where("access_token = ?", cookie.Value).First(&sessionUser).Error; err != nil {
+		// Retrieve the session user from the database
+		authenticatedSession := model.Session{}
+		if err := db.Where("access_token = ?", cookie.Value).First(&authenticatedSession).Error; err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "Access Token not found."})
 			fileLogger.LogToFile("AUTH", "Access Token not found.")
 			return
 		}
 
-		// Compare the session token with the stored session token in the database
-		if cookie.Name != "session_token" || cookie.Value != sessionUser.AccessToken {
+		// Check if the session token matches the stored session token
+		if cookie.Name != "session_token" || cookie.Value != authenticatedSession.AccessToken {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. The session cookie does not match the stored session token."})
 			fileLogger.LogToFile("AUTH", "User authorization failed. Session Cookie does not match the stored session token.")
 			return
 		}
 
-		// Retrieve the user information from the database
-		var user model.User
-		if err := db.Where("id = ?", sessionUser.UserID).First(&user).Error; err != nil {
+		// Retrieve the user from the database
+		authenticatedUser := model.User{}
+		if err := db.Where("id = ?", authenticatedSession.UserID).First(&authenticatedUser).Error; err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "User not found."})
 			fileLogger.LogToFile("AUTH", "User not found.")
 			return
 		}
 
-		// If the session token matches, authorization is successful
-		ctx := context.WithValue(r.Context(), "sessionUserKey", sessionUser)
-		ctx = context.WithValue(ctx, "userKey", user)
+		// Save
+		ctx := context.WithValue(r.Context(), appconstants.ContextKeyAuthenticatedSession, authenticatedSession)
+		ctx = context.WithValue(ctx, appconstants.ContextKeyAuthenticatedUser, authenticatedUser)
 
 		r = r.WithContext(ctx)
 
