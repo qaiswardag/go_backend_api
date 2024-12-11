@@ -25,16 +25,16 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		// Check if the cookie is not found
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(map[string]string{"message": "Session Cookis is empty."})
-			fileLogger.LogToFile("AUTH", "Session Cookis is empty.")
+			json.NewEncoder(w).Encode(map[string]string{"message": "Session cookie not found."})
+			fileLogger.LogToFile("AUTH", "Session cookie not found.")
 			return
 		}
 
 		// Check if the cookie value is empty
 		if cookie.Value == "" {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(map[string]string{"message": "Session Cookie is empty"})
-			fileLogger.LogToFile("AUTH", "User authorization failed. Session Cookie is empty.")
+			json.NewEncoder(w).Encode(map[string]string{"message": "Session cookie is empty"})
+			fileLogger.LogToFile("AUTH", "User authorization failed. Session cookie is empty.")
 			return
 		}
 
@@ -64,8 +64,8 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		// Check if the session token does not match the stored session token in the database
 		if cookie.Value != authenticatedSession.SessionToken {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. The session cookie does not match the stored session token."})
-			fileLogger.LogToFile("AUTH", "User authorization failed. The session cookie does not match the stored session token.")
+			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. Session cookie does not match the stored session token."})
+			fileLogger.LogToFile("AUTH", "User authorization failed. Session cookie does not match the stored session token.")
 			return
 		}
 
