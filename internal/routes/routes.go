@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/authcontroller"
@@ -21,25 +22,36 @@ func ChainMiddlewares(handler http.Handler, middlewares ...func(http.Handler) ht
 
 func MainRouter() http.Handler {
 
-	// TODO: Add methods for each route: "GET", "POST", "PUT" etc.
 	mux := http.NewServeMux()
 
 	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			json.NewEncoder(w).Encode(map[string]string{"message": "Method not allowed"})
+			return
+		}
+
 		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"message": "Welcome to the Go API!"})
 		homecontroller.Show(w, r)
 	}))
 
+	// TODO: Add POST method for this route
 	mux.Handle("/user/sign-in", middleware.Cors(
 		middleware.GlobalMiddleware(
 			http.HandlerFunc(usersessionscontroller.Create),
 		),
 	))
+
+	// TODO: Add POST method for this route
 	mux.Handle("/user/sign-up", middleware.Cors(
 		middleware.GlobalMiddleware(
 			http.HandlerFunc(userregistercontroller.Create),
 		),
 	))
 
+	// Add DELETE method for this route
 	mux.Handle("/user/sign-out",
 		middleware.Cors(
 			middleware.GlobalMiddleware(
@@ -50,6 +62,7 @@ func MainRouter() http.Handler {
 		),
 	)
 
+	// Add GET method for this route
 	mux.Handle("/user/user", ChainMiddlewares(
 		http.HandlerFunc(authcontroller.Show),
 		middleware.RequireSessionMiddleware,
