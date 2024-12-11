@@ -24,8 +24,10 @@ func main() {
 	// Drop all tables
 	database.CreateTables(db)
 
+	var passwordUnhashed string = "123456"
+
 	// Hash the password using bcrypt
-	hashedPassword, errHashing := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
+	hashedPassword, errHashing := bcrypt.GenerateFromPassword([]byte(passwordUnhashed), bcrypt.DefaultCost)
 	if errHashing != nil {
 		fmt.Println("Hashing error.")
 		return
@@ -33,9 +35,10 @@ func main() {
 	// Create 10 fake users
 	for i := 1; i <= 10; i++ {
 		user := model.User{
-			UserName:  fmt.Sprintf("user%d", i),
-			Email:     fmt.Sprintf("user%d@example.com", i),
-			Password:  fmt.Sprint(hashedPassword),
+			UserName: fmt.Sprintf("user%d", i),
+			Email:    fmt.Sprintf("user%d@example.com", i),
+			// Convert hashed password from byte slice to string
+			Password:  string(hashedPassword),
 			FirstName: fmt.Sprintf("FirstName%d", i),
 			LastName:  fmt.Sprintf("LastName%d", i),
 		}

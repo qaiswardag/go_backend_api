@@ -96,7 +96,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		Email:     req.Email,
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
-		Password:  string(hashedPassword),
+		// Convert hashed password from byte slice to string
+		Password: string(hashedPassword),
 	}
 
 	// Start a new transaction
