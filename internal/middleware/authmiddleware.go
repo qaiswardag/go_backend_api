@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/qaiswardag/go_backend_api_jwt/database"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
@@ -59,12 +60,31 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// Retrieve the user from the database
+		// Check if the session is older than current time
+		if time.Now().After(authenticatedSession.AccessTokenExpiry) {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. The session token has expired."})
+			fileLogger.LogToFile("AUTH", "User authorization failed. The session token has expired.")
+			return
+		}
+
+		// Get the user from the database based on the session user ID
 		authenticatedUser := model.User{}
 		if err := db.Where("id = ?", authenticatedSession.UserID).First(&authenticatedUser).Error; err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "User not found."})
 			fileLogger.LogToFile("AUTH", "User not found.")
+			return
+		}
+
+		// Extend the session token expiry by 7 days
+		authenticatedSession.AccessTokenExpiry = time.Now().Add(appconstants.TokenExpiration)
+
+		// Save the updated session to the database
+		if err := db.Save(&authenticatedSession).Error; err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]string{"message": "Failed to update the session expiry in the database."})
+			fileLogger.LogToFile("AUTH", "Failed to update the session expiry in the database.")
 			return
 		}
 
