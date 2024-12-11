@@ -1,6 +1,8 @@
 package appconstants
 
-import "time"
+import (
+	"time"
+)
 
 // This function is used to set the expiration date of a cookie to one hour ago.
 // This is useful when we want to delete a cookie.
@@ -9,7 +11,8 @@ func TimeNowMinusOneHour() time.Time {
 	return time.Now().Add(-1 * time.Hour)
 }
 
-// SevenDays defines the duration of seven days.
+// Duration of seven days in hours. Output: 168h0m0s
+// 168h0m0s represents a duration of 168 hours, 0 minutes, and 0 seconds.
 const SevenDays = 7 * 24 * time.Hour
 
 // TokenExpirationDuration defines the duration for which the token is valid.
