@@ -46,23 +46,31 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 
 		// Retrieve the session user from the database
 		authenticatedSession := model.Session{}
-		if err := db.Where("access_token = ?", cookie.Value).First(&authenticatedSession).Error; err != nil {
+		if err := db.Where("session_token = ?", cookie.Value).First(&authenticatedSession).Error; err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "Access Token not found."})
 			fileLogger.LogToFile("AUTH", "Access Token not found.")
 			return
 		}
 
-		// Check if the session token matches the stored session token
-		if cookie.Name != "session_token" || cookie.Value != authenticatedSession.AccessToken {
+		// Check if the session token is not found
+		if cookie.Name != "session_token" {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. No session token in the cookie."})
+			fileLogger.LogToFile("AUTH", "User authorization failed. No session token in the cookie.")
+			return
+		}
+
+		// Check if the session token does not match the stored session token in the database
+		if cookie.Value != authenticatedSession.SessionToken {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. The session cookie does not match the stored session token."})
-			fileLogger.LogToFile("AUTH", "User authorization failed. Session Cookie does not match the stored session token.")
+			fileLogger.LogToFile("AUTH", "User authorization failed. The session cookie does not match the stored session token.")
 			return
 		}
 
 		// Check if the session is older than current time
-		if time.Now().After(authenticatedSession.AccessTokenExpiry) {
+		if time.Now().After(authenticatedSession.SessionTokenExpiry) {
 			utils.RemoveCookie(w, "session_token", true)
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. The session token has expired."})
@@ -80,7 +88,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 		}
 
 		// Extend the session token expiry by 7 days
-		authenticatedSession.AccessTokenExpiry = time.Now().Add(appconstants.TokenExpiration)
+		authenticatedSession.SessionTokenExpiry = time.Now().Add(appconstants.TokenExpiration)
 
 		// Save the updated session to the database
 		if err := db.Save(&authenticatedSession).Error; err != nil {

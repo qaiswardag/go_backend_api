@@ -120,10 +120,10 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	// Create a Session object
 	session := &model.Session{
-		UserID:            int(newUser.ID),
-		AccessToken:       sessionToken,
-		ServerIP:          serverIP,
-		AccessTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
+		UserID:             int(newUser.ID),
+		SessionToken:       sessionToken,
+		SessionTokenExpiry: time.Now().Add(appconstants.TokenExpiration),
+		ServerIP:           serverIP,
 	}
 
 	// Save the session to the database
