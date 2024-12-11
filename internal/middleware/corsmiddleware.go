@@ -63,11 +63,11 @@ func Cors(next http.Handler) http.Handler {
 		fileLogger.LogToFile("CORS", "Handle CORS Preflight Request before processing the request.")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"message": "Preflight request handled"}`))
+			w.Write([]byte(`{"message": "Preflight request handled."}`))
 			return
 		}
 
-		fileLogger.LogToFile("CORS", "Finished handling CORS Preflight Request")
+		fileLogger.LogToFile("CORS", "Finished handling CORS Preflight Request.")
 
 		// Pass control to the next middleware or handler
 		next.ServeHTTP(w, r)

@@ -10,6 +10,7 @@ import (
 	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/utils"
 )
 
 // RequireSessionMiddleware is a middleware that checks if the user is authenticated
@@ -62,6 +63,7 @@ func RequireSessionMiddleware(next http.Handler) http.Handler {
 
 		// Check if the session is older than current time
 		if time.Now().After(authenticatedSession.AccessTokenExpiry) {
+			utils.RemoveCookie(w, "session_token", true)
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(map[string]string{"message": "User authorization failed. The session token has expired."})
 			fileLogger.LogToFile("AUTH", "User authorization failed. The session token has expired.")
