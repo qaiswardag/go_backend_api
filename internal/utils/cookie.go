@@ -12,7 +12,7 @@ func RemoveCookie(w http.ResponseWriter, name string, httpOnly bool) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     name,
 		Value:    "",
-		Expires:  time.Now().Add(-1 * time.Hour),
+		Expires:  appconstants.TimeNowMinusOneHour(),
 		HttpOnly: httpOnly,
 		Path:     "/",
 	})
