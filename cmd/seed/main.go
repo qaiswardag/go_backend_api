@@ -6,6 +6,7 @@ import (
 	"github.com/qaiswardag/go_backend_api_jwt/database"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
@@ -23,12 +24,18 @@ func main() {
 	// Drop all tables
 	database.CreateTables(db)
 
+	// Hash the password using bcrypt
+	hashedPassword, errHashing := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
+	if errHashing != nil {
+		fmt.Println("Hashing error.")
+		return
+	}
 	// Create 10 fake users
 	for i := 1; i <= 10; i++ {
 		user := model.User{
 			UserName:  fmt.Sprintf("user%d", i),
 			Email:     fmt.Sprintf("user%d@example.com", i),
-			Password:  fmt.Sprintf("123%d", i),
+			Password:  fmt.Sprint(hashedPassword),
 			FirstName: fmt.Sprintf("FirstName%d", i),
 			LastName:  fmt.Sprintf("LastName%d", i),
 		}

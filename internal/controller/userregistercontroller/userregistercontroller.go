@@ -82,10 +82,11 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	utils.SetCookie(w, "csrf_token", csrfToken, false)
 
 	// Hash the password using bcrypt
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
+	hashedPassword, errHashing := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if errHashing != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Internal server error"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "Hashing error."})
+		fileLogger.LogToFile("Hashing", "Hashing error.")
 		return
 	}
 
