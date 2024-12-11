@@ -34,7 +34,6 @@ type RegisterRequest struct {
 	Password  string `json:"password"`
 }
 
-// Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
 	utils.RemoveCookie(w, "session_token", true)
 	utils.RemoveCookie(w, "csrf_token", false)
