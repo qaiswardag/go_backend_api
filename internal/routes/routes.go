@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/authcontroller"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/home"
+	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/homecontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/userregistercontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/usersessionscontroller"
 	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
@@ -26,7 +26,7 @@ func MainRouter() http.Handler {
 
 	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		home.Show(w, r)
+		homecontroller.Show(w, r)
 	}))
 
 	mux.Handle("/user/sign-in", middleware.Cors(

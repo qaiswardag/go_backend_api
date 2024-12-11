@@ -1,7 +1,9 @@
-package home
+package homecontroller
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -16,6 +18,8 @@ import (
 */
 
 func Show(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("heloooo%v", true)
+	log.Println("Welcome to home.")
 	w.WriteHeader(http.StatusNotFound)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Welcome to home."})
 
