@@ -22,3 +22,8 @@ const (
 	ContextKeyAuthenticatedSession = "authenticatedSession"
 	ContextKeyAuthenticatedUser    = "authenticatedUser"
 )
+
+// Forms
+const MinTwoCharacters = 2
+const MaxFiftyCharacters = 50
+const MaxTwoHundredFiftyFiveCharacters = 255

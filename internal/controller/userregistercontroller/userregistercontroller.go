@@ -63,6 +63,15 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		panic("failed to connect database")
 	}
 
+	// Ensure username is min 2 and maximum 50 characters
+	if req.Username == "" || len(req.Username) < appconstants.MinTwoCharacters ||
+		len(req.Username) > appconstants.MaxFiftyCharacters {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Username must be between 2 and 50 characters."})
+		fileLogger.LogToFile("BAD REQUEST", "Username must be between 2 and 50 characters.")
+		return
+	}
+
 	// Check if the record already exists
 	userByUsername := model.User{}
 	if utils.CheckIfRecordExists(db, &userByUsername, "user_name", req.Username, w, fileLogger) {
