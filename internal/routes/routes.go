@@ -33,7 +33,6 @@ func MainRouter() http.Handler {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"message": "Welcome to the Go API!"})
 		homecontroller.Show(w, r)
 	}))
 
