@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/authcontroller"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/homecontroller"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/userregistercontroller"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/controller/usersessionscontroller"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/middleware"
+	"github.com/qaiswardag/go_backend_api/internal/controller/authcontroller"
+	"github.com/qaiswardag/go_backend_api/internal/controller/homecontroller"
+	"github.com/qaiswardag/go_backend_api/internal/controller/userregistercontroller"
+	"github.com/qaiswardag/go_backend_api/internal/controller/usersessionscontroller"
+	"github.com/qaiswardag/go_backend_api/internal/middleware"
 )
 
 type RouteHandler struct{}

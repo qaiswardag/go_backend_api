@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
+	"github.com/qaiswardag/go_backend_api/internal/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/qaiswardag/go_backend_api_jwt/database"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
+	"github.com/qaiswardag/go_backend_api/database"
+	"github.com/qaiswardag/go_backend_api/internal/config"
+	"github.com/qaiswardag/go_backend_api/internal/model"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -16,8 +16,8 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
+	"github.com/qaiswardag/go_backend_api/internal/config"
+	"github.com/qaiswardag/go_backend_api/internal/logger"
 )
 
 func Cors(next http.Handler) http.Handler {

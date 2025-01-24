@@ -1,4 +1,4 @@
-module github.com/qaiswardag/go_backend_api_jwt
+module github.com/qaiswardag/go_backend_api
 
 go 1.22.1
 

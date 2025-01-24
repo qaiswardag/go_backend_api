@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/database"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/utils"
+	"github.com/qaiswardag/go_backend_api/database"
+	"github.com/qaiswardag/go_backend_api/internal/appconstants"
+	"github.com/qaiswardag/go_backend_api/internal/logger"
+	"github.com/qaiswardag/go_backend_api/internal/model"
+	"github.com/qaiswardag/go_backend_api/internal/utils"
 )
 
 /*

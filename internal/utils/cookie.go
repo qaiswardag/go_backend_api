@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/appconstants"
+	"github.com/qaiswardag/go_backend_api/internal/appconstants"
 )
 
 // RemoveCookie removes a cookie by setting its expiration date to a time in the past.

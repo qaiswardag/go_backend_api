@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/qaiswardag/go_backend_api_jwt/internal/model"
+	"github.com/qaiswardag/go_backend_api/internal/model"
 	"gorm.io/gorm"
 )
 

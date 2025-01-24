@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/config"
-	"github.com/qaiswardag/go_backend_api_jwt/internal/routes"
+	"github.com/qaiswardag/go_backend_api/internal/config"
+	"github.com/qaiswardag/go_backend_api/internal/routes"
 )
 
 func main() {

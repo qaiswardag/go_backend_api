@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/qaiswardag/go_backend_api_jwt/internal/logger"
+	"github.com/qaiswardag/go_backend_api/internal/logger"
 	"gorm.io/gorm"
 )
 
