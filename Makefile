@@ -1,5 +1,9 @@
 APP_NAME=myapp
 
+air: 
+	@echo "Live reloading..."
+	@air -c .air.toml
+
 build: 
 	@echo "Building..."
 	@go build -o bin/$(APP_NAME) cmd/api/main.go
