@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/qaiswardag/go_backend_api/internal/controller/authcontroller"
@@ -24,17 +23,12 @@ func MainRouter() http.Handler {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			json.NewEncoder(w).Encode(map[string]string{"message": "Method not allowed"})
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		homecontroller.Show(w, r)
-	}))
+	// TODO: Add GET method for this route
+	mux.Handle("/", middleware.Cors(
+		middleware.GlobalMiddleware(
+			http.HandlerFunc(homecontroller.Show),
+		),
+	))
 
 	// TODO: Add POST method for this route
 	mux.Handle("/user/sign-in", middleware.Cors(
