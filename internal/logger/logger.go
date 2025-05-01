@@ -12,6 +12,7 @@ type FileLogger struct{}
 
 // LogToFile logs a message to the specified log file
 func (f FileLogger) LogToFile(title string, message string) {
+	return
 
 	// Check if the "storage" directory exists
 	storageDir := "storage"
