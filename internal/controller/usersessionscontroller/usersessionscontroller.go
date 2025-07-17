@@ -12,7 +12,6 @@ import (
 	"github.com/qaiswardag/go_backend_api/internal/model"
 	"github.com/qaiswardag/go_backend_api/internal/security/tokengen"
 	"github.com/qaiswardag/go_backend_api/internal/utils"
-	"github.com/qaiswardag/go_backend_api/pkg/jsonhttp"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -33,9 +32,6 @@ type LoginRequest struct {
 
 // Handler login
 func Create(w http.ResponseWriter, r *http.Request) {
-
-	var readJSON jsonhttp.ReadJSON
-	readJSON.ValidateAndParseJSON(r)
 
 	utils.RemoveCookie(w, "session_token", true)
 	utils.RemoveCookie(w, "csrf_token", false)
