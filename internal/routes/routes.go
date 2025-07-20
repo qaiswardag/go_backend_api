@@ -21,13 +21,49 @@ func ChainMiddlewares(handler http.Handler, middlewares ...func(http.Handler) ht
 
 func MainRouter() http.Handler {
 
-	mux := http.NewServeMux()
-
 	// Wrap mux with a handler that calls SayHi() for every request
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		router.SayHi()      // This runs on every request
-		mux.ServeHTTP(w, r) // Forward the request to actual router
+		router.SayHi(w, r) // This runs on every request
 	})
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	mux := http.NewServeMux()
 
 	// TODO: Add GET method for this route
 	mux.Handle("/", middleware.Cors(
