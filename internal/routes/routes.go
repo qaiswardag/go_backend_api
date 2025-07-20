@@ -6,8 +6,8 @@ import (
 	"github.com/qaiswardag/go_backend_api/internal/controller/authcontroller"
 	"github.com/qaiswardag/go_backend_api/internal/controller/homecontroller"
 	"github.com/qaiswardag/go_backend_api/internal/controller/userregistercontroller"
-	"github.com/qaiswardag/go_backend_api/internal/controller/usersessionscontroller"
 	"github.com/qaiswardag/go_backend_api/internal/middleware"
+	"github.com/qaiswardag/go_backend_api/internal/router"
 )
 
 type RouteHandler struct{}
@@ -23,6 +23,12 @@ func MainRouter() http.Handler {
 
 	mux := http.NewServeMux()
 
+	// Wrap mux with a handler that calls SayHi() for every request
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		router.SayHi()      // This runs on every request
+		mux.ServeHTTP(w, r) // Forward the request to actual router
+	})
+
 	// TODO: Add GET method for this route
 	mux.Handle("/", middleware.Cors(
 		middleware.GlobalMiddleware(
@@ -31,11 +37,12 @@ func MainRouter() http.Handler {
 	))
 
 	// TODO: Add POST method for this route
-	mux.Handle("/user/sign-in", middleware.Cors(
-		middleware.GlobalMiddleware(
-			http.HandlerFunc(usersessionscontroller.Create),
-		),
-	))
+
+	// mux.Handle("/user/sign-in", middleware.Cors(
+	// 	middleware.GlobalMiddleware(
+	// 		http.HandlerFunc(usersessionscontroller.Create),
+	// 	),
+	// ))
 
 	// TODO: Add POST method for this route
 	mux.Handle("/user/sign-up", middleware.Cors(
