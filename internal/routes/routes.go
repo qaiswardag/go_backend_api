@@ -30,7 +30,7 @@ func MainRouter() http.Handler {
 	// });
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		qrouter.NewRouter(w, r)
+		qrouter.Get(w, r)
 	})
 }
 
