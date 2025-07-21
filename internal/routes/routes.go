@@ -6,8 +6,9 @@ import (
 	"github.com/qaiswardag/go_backend_api/internal/controller/authcontroller"
 	"github.com/qaiswardag/go_backend_api/internal/controller/homecontroller"
 	"github.com/qaiswardag/go_backend_api/internal/controller/userregistercontroller"
+	"github.com/qaiswardag/go_backend_api/internal/controller/usersessionscontroller"
 	"github.com/qaiswardag/go_backend_api/internal/middleware"
-	"github.com/qaiswardag/go_backend_api/internal/router"
+	"github.com/qaiswardag/go_backend_api/internal/qrouter"
 )
 
 type RouteHandler struct{}
@@ -21,48 +22,57 @@ func ChainMiddlewares(handler http.Handler, middlewares ...func(http.Handler) ht
 
 func MainRouter() http.Handler {
 
-	// Wrap mux with a handler that calls SayHi() for every request
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		router.SayHi(w, r) // This runs on every request
-	})
+	// Route::middleware(['first', 'second'])->group(function () {
+	//   Route::get('/', function () {
+	//   });
+	//   Route::get('/user/profile', function () {
+	//   });
+	// });
 
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		qrouter.NewRouter(w, r)
+	})
+}
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+func MainRouter2() http.Handler {
 	mux := http.NewServeMux()
 
 	// TODO: Add GET method for this route
@@ -74,11 +84,11 @@ func MainRouter() http.Handler {
 
 	// TODO: Add POST method for this route
 
-	// mux.Handle("/user/sign-in", middleware.Cors(
-	// 	middleware.GlobalMiddleware(
-	// 		http.HandlerFunc(usersessionscontroller.Create),
-	// 	),
-	// ))
+	mux.Handle("/user/sign-in", middleware.Cors(
+		middleware.GlobalMiddleware(
+			http.HandlerFunc(usersessionscontroller.Create),
+		),
+	))
 
 	// TODO: Add POST method for this route
 	mux.Handle("/user/sign-up", middleware.Cors(
